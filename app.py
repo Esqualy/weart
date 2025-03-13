@@ -2,6 +2,12 @@ import torch
 import clip
 from PIL import Image
 import numpy as np
+import json
+
+# Charge le fichier JSON avec le reste
+with open('oeuvres.json', 'r') as f:
+    oeuvres = json.load(f)
+
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-L/14", device=device)
@@ -34,5 +40,5 @@ for i in range(len(image_paths)):
     for j in range(i + 1, len(image_paths)):
         similarity = similarity_matrix_np[i][j]
         if similarity > 0.65: 
-            res.append((images_labels[j], similarity))  
-    similar_images[images_labels[i]] = res 
+            res.append((image_labels[j], similarity))  
+    similar_images[image_labels[i]] = res 
