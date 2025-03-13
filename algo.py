@@ -6,9 +6,9 @@ import random
 
 ########################VARIABLES########################
 
-nbartists = 4
-nboeuvres = 56
-nbamateurs = 12
+nbartists = 3
+nboeuvres = 12
+nbamateurs = 4
 
 oeuvres_artist = {}
 amateur_oeuvre = {}
