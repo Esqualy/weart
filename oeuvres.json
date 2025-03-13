@@ -1,7 +1,7 @@
 [
   {
     "id": "oeuvre1",
-    "path": ".\oeuvre1.jpg",
+    "path": "./oeuvre1.jpg",
     "id_artist" : "artiste1"
     "titre": "ciel étoilé"
     "description": "joli ciel étoilé et caeteri et caetera..."}
