@@ -1,12 +1,30 @@
 [
   {
   "id_am": "1",
-  "password": "thibault_tu_t'en_occuppes",
-  "mail": "username@gmail.com",
+  "pseudo": "ninjaturtle3"
+  "password": "jaimelescalade",
+  "mail": "climbingturtle@gmail.com",
+  "ddn": "21032005"
+  },
+  {
+  "id_am": "2",
+  "pseudo": "pantagru3l"
+  "password": "gargantuajtm",
+  "mail": "p4nt4tgru3l@gmail.com",
   "ddn": "03032007"
   },
   {
-  "id_am": "1",
-  "password": "thibault_tu_t'en_occuppes",
-  "mail": "username@gmail.com",
-  "ddn": "03032007"
+  "id_am": "3",
+  "pseudo": "pseudocool"
+  "password": "password1234",
+  "mail": "adressemailcool@gmail.com",
+  "ddn": "01012001"
+  },
+  {
+  "id_am": "4",
+  "pseudo": "calclibre"
+  "password": "libreofficepourtoujours",
+  "mail": "libeofficelevrai@gmail.com",
+  "ddn": "07122009"
+  }
+]
