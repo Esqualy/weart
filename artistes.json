@@ -1,7 +1,31 @@
   {
     "id_art": "1",
-    "pseudo": "jujudu34",
+    "pseudo": "",
     "password": "motdepasse#1234",
     "mail" : "jules@gmail.com",
     "ddn": "02022009"
+  }
+
+  {
+    "id_art": "2",
+    "pseudo": "Nexus_9",
+    "password": "nexus1234",
+    "mail" : "nicolasjean@gmail.com",
+    "ddn": ""
+  }
+
+ {
+    "id_art": "3",
+    "pseudo": "Monolithe",
+    "password": "lhommeestlamesuredetoutechose",
+    "mail" : "monolithe@gmail.com",
+    "ddn": ""
+  }
+
+ {
+    "id_art": "4",
+    "pseudo": "ZenithX",
+    "password": "jeboisduthefruitsrouge",
+    "mail" : "",
+    "ddn": ""
   }
