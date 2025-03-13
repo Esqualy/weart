@@ -1,6 +1,12 @@
-{
-  "id": "o1",
+[
+  {
+  "id_am": "1",
   "password": "thibault_tu_t'en_occuppes",
   "mail": "username@gmail.com",
-  "ddn"; "03032007"
-}
+  "ddn": "03032007"
+  },
+  {
+  "id_am": "1",
+  "password": "thibault_tu_t'en_occuppes",
+  "mail": "username@gmail.com",
+  "ddn": "03032007"
