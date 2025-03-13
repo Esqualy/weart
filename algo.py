@@ -18,8 +18,8 @@ def link_amateur_oeuvres():
     amateur_dict = {}
     for i in range(nbamateurs):
         amateur = f"amateur_{i+1}"  # On nomme les amateurs
-        artiste_favori = random.randint(0, max(oeuvres_artists.values()))  # Choix d’un artiste favori
-        oeuvres_de_l_artiste = [oeuvre for oeuvre, artiste in oeuvres_artists.items() if artiste == artiste_favori]
+        artiste_favori = random.randint(0, max(oeuvres_artist.values()))  # Choix d’un artiste favori
+        oeuvres_de_l_artiste = [oeuvre for oeuvre, artiste in oeuvres_artist.items() if artiste == artiste_favori]
         nb_oeuvres = min(5, len(oeuvres_de_l_artiste))  # L'amateur peut aimer jusqu'à 5 œuvres
         oeuvres = random.sample(oeuvres_de_l_artiste, nb_oeuvres) if oeuvres_de_l_artiste else []
         amateur_dict[amateur] = {"artiste_favori": artiste_favori, "oeuvres_aimees": oeuvres}
