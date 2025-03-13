@@ -1,31 +1,23 @@
   {
     "id_art": "1",
-    "pseudo": "",
-    "password": "motdepasse#1234",
-    "mail" : "jules@gmail.com",
-    "ddn": "02022009"
-  }
+    "pseudo": "Claude_Monet",
+    "password": "j'aimelepastel123",
+    "mail" : "monet.claude@gmail.com",
+    "ddn": "14111840"
+  },
 
   {
     "id_art": "2",
-    "pseudo": "Nexus_9",
-    "password": "nexus1234",
-    "mail" : "nicolasjean@gmail.com",
-    "ddn": ""
-  }
+    "pseudo": "Leonardo_Da_Vinci",
+    "password": "Ilrigoresuperasemprel'ostacolo",
+    "mail" : "l.davinci@gmail.com",
+    "ddn": "14041452"
+  },
 
  {
     "id_art": "3",
-    "pseudo": "Monolithe",
-    "password": "lhommeestlamesuredetoutechose",
-    "mail" : "monolithe@gmail.com",
-    "ddn": ""
-  }
-
- {
-    "id_art": "4",
-    "pseudo": "ZenithX",
-    "password": "jeboisduthefruitsrouge",
-    "mail" : "",
-    "ddn": ""
+    "pseudo": "Pablo_Picasso",
+    "password": "Quandjen'aipasdebleujemetsdurouge",
+    "mail" : "picasso.pablo@gmail.com",
+    "ddn": "25101881"
   }
