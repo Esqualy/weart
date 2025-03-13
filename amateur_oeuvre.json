@@ -1,6 +1,18 @@
 {
-  "idamateur1": "idoeuvre1",
-  "idamateur1": "idoeuvre2",
-  "idamateur2": "idoeuvre2" ,
-  "idamateur2": "idoeuvre3"
+    "1": {
+        "pseudo": "ninjaturtle3",
+        "oeuvres": ["3", "1", "2"]
+    },
+    "2": {
+        "pseudo": "pantagru3l",
+        "oeuvres": ["7", "5"]
+    },
+    "3": {
+        "pseudo": "pseudocool",
+        "oeuvres": ["11"]
+    },
+    "4": {
+        "pseudo": "calclibre",
+        "oeuvres": ["9", "4"]
+    }
 }
