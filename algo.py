@@ -34,8 +34,5 @@ def recommander_oeuvres():
     recommendations = {}
 
 ########################ALGORITHME########################
-
-oeuvres_artists = link_oeuvres_artists()
 amateur_oeuvre = link_amateur_oeuvres()
-print(oeuvres_artists)
 print(amateur_oeuvre)
