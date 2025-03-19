@@ -1,15 +1,26 @@
-from flask import Flask, render_template, request, redirect, url_for
-import hashlib
+from flask import Flask, request
+import bcrypt
+import logging
 
 app = Flask(__name__)
 
+# Configuration du logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Hachage sécurisé avec bcrypt
+password_plaintext = "motdepasse123".encode()
+password_hashed = bcrypt.hashpw(password_plaintext, bcrypt.gensalt())  # Génère un hash sécurisé
+
 USER_DATA = {
     "username": "jujudu34",
-    "password_hash": hashlib.sha256("motdepasse123".encode()).hexdigest()  
+    "password_hash": password_hashed  # Stockage sécurisé du hash
 }
 
+logging.debug(f"Mot de passe bcrypt hashé stocké: {USER_DATA['password_hash']}")
+
 def verify_password(input_password, stored_hash):
-    return hashlib.sha256(input_password.encode()).hexdigest() == stored_hash
+    """Vérifie si le mot de passe entré correspond au hash stocké avec bcrypt."""
+    return bcrypt.checkpw(input_password.encode(), stored_hash)
 
 @app.route("/", methods=["GET", "POST"])
 def login():
@@ -17,9 +28,14 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
 
+        logging.debug(f"Tentative de connexion avec l'utilisateur: {username}")
+        
+        # Vérifier les identifiants
         if username == USER_DATA["username"] and verify_password(password, USER_DATA["password_hash"]):
+            logging.info("Connexion réussie.")
             return "✅ Connexion réussie ! Bienvenue " + username
         else:
+            logging.warning("Échec de la connexion : identifiants incorrects.")
             return "❌ Mot de passe ou nom d'utilisateur incorrect."
 
     return '''
