@@ -4,7 +4,7 @@ import json
 import os
 
 app = Flask(__name__)
-app.secret_key = 'supersecretkey'  # Nécessaire pour utiliser les sessions
+app.secret_key = 'esqualycookie'  
 
 # Vérification du mot de passe avec bcrypt
 def verify_password(input_password, stored_hash):
