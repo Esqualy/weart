@@ -264,5 +264,19 @@
     "password": "summitseeker",
     "mail": "mountainlover@gmail.com",
     "ddn": "07081992"
+  },
+  {
+    "IdAm": "39",
+    "pseudo": "spaceexplorer",
+    "password": "galaxytraveller",
+    "mail": "cosmicadventures@gmail.com",
+    "ddn": "16032000"
+  },
+  {
+    "IdAm": "40",
+    "pseudo": "fashionista",
+    "password": "stylequeen",
+    "mail": "trendsetter@gmail.com",
+    "ddn": "12081998"
   }
 ]
