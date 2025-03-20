@@ -1,20 +1,20 @@
  [
    {
-    "id_ar": "1",
+    "IdAr": "1",
     "pseudo": "Claude_Monet",
     "password": "j'aimelepastel123",
     "mail" : "monet.claude@gmail.com",
     "ddn": "14111840"
   },
   {
-    "id_ar": "2",
+    "IdAr": "2",
     "pseudo": "Leonardo_Da_Vinci",
     "password": "Ilrigoresuperasemprel'ostacolo",
     "mail" : "l.davinci@gmail.com",
     "ddn": "14041452"
   },
  {
-    "id_ar": "3",
+    "IdAr": "3",
     "pseudo": "Pablo_Picasso",
     "password": "Quandjen'aipasdebleujemetsdurouge",
     "mail" : "picasso.pablo@gmail.com",
