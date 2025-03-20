@@ -1,0 +1,9 @@
+flask (pip install flask)
+paramiko (pip install paramiko)
+bcrypt (pip install bcrypt)
+torch (pip install torch)
+pillow (pip install pillow)
+numpy (pip install numpy)
+==
+
+clip (pip install git+https://github.com/openai/CLIP.git) <-- nécessite Git (https://git-scm.com/)
