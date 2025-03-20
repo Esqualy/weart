@@ -16,11 +16,11 @@ h3 {
 }
 h4 {
     text-align: left;
-    color : rgb(110, 161, 174);
+    color : rgb(255, 255, 255);
     font-size: 40px;
 }
 body {
-    background-color: rgb(36, 36, 36)
+    background-color: rgb(58, 58, 58)
 }
 p span {
     background: rgb(206, 155, 88);
@@ -29,5 +29,5 @@ a:visited {
     color: rgb(127, 198, 132)
 }
 a:hover {
-    color:rgb(132, 168, 177)
+    color:rgb(207, 245, 255)
 }
