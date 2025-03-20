@@ -1,38 +1,81 @@
-import torch
-import clip
-from PIL import Image
-import numpy as np
-import random
+##############IMPORTS
 
-########################VARIABLES########################
+from requetes import like_amateur, auteur, oeuvres_auteur_liké
 
-nbartists = 3
-nboeuvres = 12
-nbamateurs = 4
 
-oeuvres_artist = {}
-amateur_oeuvre = {}
+##############VARS
 
-###############DEFINITIONS DE FONCTIONS####################
-def link_amateur_oeuvres():
-    amateur_dict = {}
-    for i in range(nbamateurs):
-        amateur = f"amateur_{i+1}"  # On nomme les amateurs
-        artiste_favori = random.randint(0, max(oeuvres_artist.values()))  # Choix d’un artiste favori
-        oeuvres_de_l_artiste = [oeuvre for oeuvre, artiste in oeuvres_artist.items() if artiste == artiste_favori]
-        nb_oeuvres = min(5, len(oeuvres_de_l_artiste))  # L'amateur peut aimer jusqu'à 5 œuvres
-        oeuvres = random.sample(oeuvres_de_l_artiste, nb_oeuvres) if oeuvres_de_l_artiste else []
-        amateur_dict[amateur] = {"artiste_favori": artiste_favori, "oeuvres_aimees": oeuvres}
-    return amateur_dict
+idAmateurMain = input("ID MAIN")
+idOeuvresLikees = []
+idArtistsLikes = [] #Attention, par le biais des oeuvres ci-dessus
+idOeuvresArtists = [] #Attention, toutes les oeuvres des ArtistsLikes, y compris les OeuvresLikees
+idAmateurOeuvresLikees = []
+idOeuvresLikeesParAmateursOeuvresLikees = []
 
-########################RECOMMANDATION PAR IA########################
+idOeuvresAProposer1 = []
+idOeuvresAProposer2 = []
+idOeuvresAproposerFinal = []
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model, preprocess = clip.load("ViT-L/14", device=device)
 
-def recommander_oeuvres():
-    recommendations = {}
+##############DEFS
 
-########################ALGORITHME########################
-amateur_oeuvre = link_amateur_oeuvres()
-print(amateur_oeuvre)
+def oeuvres_auteurs(idOeuvresLikees):
+    '''Renvoie une liste d'ID des artists des likes de l'user
+    '''
+    act = []
+    for i in idOeuvresLikees:
+        act.append(auteur(i))
+    return act
+
+
+def selection_1(idOeuvresArtists, idOeuvresLikees)-> list[int]:
+    '''Retranche les idOeuvresLikees aux idOeuvresArtists (dans le but de les mettre dans idOeuvresAProposer1)
+    '''
+    act = []
+    for i in range(len(idOeuvresArtists)):
+        if not idOeuvresArtists[i] in idOeuvresLikees:
+            act.append(idOeuvresArtists[i])
+    return act
+
+def selection_2():
+    '''Propose les oeuvres des autres amateurs ayant des oeuvres likées en commun avec le main User
+    '''
+    act = []
+    for i in idOeuvresLikeesParAmateursOeuvresLikees:
+        if not i in idOeuvresLikeesParAmateursOeuvresLikees:
+            act.append(i)
+    return act
+
+
+def anti_doublons(idOeuvresAProposer1, idOeuvresAProposer2):
+    act = []
+    if len(idOeuvresAProposer1) > len(idOeuvresAProposer2):
+        for i in range(len(idOeuvresAProposer1)):
+            if not idOeuvresAProposer1[i] in idOeuvresAProposer2:
+                act.append(idOeuvresAProposer1[i])
+    else :
+        for i in range(len(idOeuvresAProposer2)):
+            if not idOeuvresAProposer2[i] in idOeuvresAProposer1:
+                act.append(idOeuvresAProposer2[i])
+    return act
+
+
+##############CODE
+
+idOeuvresAProposer1 = selection_1(idOeuvresArtists, idOeuvresLikees)
+
+### idOeuvresAProposerFinal = list(set(idOeuvresAProposer1) | set(idOeuvresAProposer2))
+
+idOeuvresLikees = like_amateur(idAmateurMain)
+idOeuvresLikees.sort()
+
+idOeuvresArtists = oeuvres_auteurs(idOeuvresLikees)
+idArtistsLikes.sort()
+
+idOeuvresArtists = oeuvres_auteur_liké(idArtistsLikes)
+idOeuvresArtists.sort()
+
+idAmateurOeuvresLikees.sort()
+idOeuvresLikeesParAmateursOeuvresLikees.sort()
+
+idOeuvresAproposerFinal = anti_doublons(idOeuvresAProposer1, idOeuvresAProposer2)
