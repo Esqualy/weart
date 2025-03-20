@@ -4,6 +4,20 @@
     "password": "$2b$12$Xyhr6Z1NQZmwS.pYkJ2sHeI/.DO5i3iCicDus482JtpHuVrRRekY2",
     "mail": "thetiti34520@gmail.com",
     "ddn": "26022008",
-    "IdAr": "1"
+    "id_ar": "1"
+  },
+  {
+    "pseudo": "sh4nxel",
+    "password": "$2b$12$NXnVKu4SuRXrji17J7u6oOirOVke6Aizv/5BApNzYohJ9Y02wihO6",
+    "mail": "chateauclemence4@gmail.com",
+    "ddn": "060408",
+    "id_ar": "2"
+  },
+  {
+    "pseudo": "artiste",
+    "password": "$2b$12$M68LkY/to09S8OM56VJTKuavjDf4ZiOJCFf5ypzT5IP1GdENS6Pmi",
+    "mail": "teampapaw2@gmail.com",
+    "ddn": "07072077",
+    "id_ar": "3"
   }
 ]
