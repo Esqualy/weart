@@ -28,7 +28,7 @@ def save_user_to_json(user_type, pseudo, password, mail, ddn):
         users = []
 
     user_id = len(users) + 1
-    user_data["id_" + user_type[0:2]] = str(user_id)
+    user_data["Id" + user_type[0:2]] = str(user_id)
     users.append(user_data)
 
     with open(file_name, 'w') as f:
