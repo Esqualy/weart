@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../main.css">
     <title>Connexion</title>
 </head>
 <body>
@@ -20,11 +19,11 @@
 
     {% with messages = get_flashed_messages() %}
         {% if messages %}
-            <ul>
+            <h4>
             {% for message in messages %}
                 <li>{{ message }}</li>
             {% endfor %}
-            </ul>
+            </h4>
         {% endif %}
     {% endwith %}
 </body>
