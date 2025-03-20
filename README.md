@@ -22,4 +22,6 @@ IP : 89.213.140.99
 [Lien Hébergeur](https://easyheberg.fr)
 
 **VPS Storage** :
-En préparation...
+User : root
+MDP : HT3j02YGbL
+IP : 93.127.158.145
