@@ -2,84 +2,84 @@
       {
           "IdOeu": "1",
           "path": "./1.jpg",
-          "id_ar": "1",
+          "IdAr": "1",
           "titre": "La Seine de jour",
           "description": ""
       },
       {
           "IdOeu": "2",
           "path": "./2.jpg",
-          "id_ar": "1",
+          "IdAr": "1",
           "titre": "La Seine au lever du soleil",
           "description": ""
       },
       {
           "IdOeu": "3",
           "path": "./3.jpg",
-          "id_ar": "1",
+          "IdAr": "1",
           "titre": "La Seine en automn",
           "description": ""
       },
       {
           "IdOeu": "4",
           "path": "./4.jpg",
-          "id_ar": "1",
+          "IdAr": "1",
           "titre": "Jardin d'iris",
           "description": ""
       },
       {
           "IdOeu": "5",
           "path": "./5.jpg",
-          "id_ar": "2",
+          "IdAr": "2",
           "titre": "La Joconde",
           "description": "Portrait de Mona Lisa"
       },
       {
           "IdOeu": "6",
           "path": "./6.jpg",
-          "id_ar": "2",
+          "IdAr": "2",
           "titre": "La naissance du Christ",
           "description": ""
       },
       {
           "IdOeu": "7",
           "path": "./7.jpg",
-          "id_ar": "2",
+          "IdAr": "2",
           "titre": "La Cène",
           "description": ""
       },
       {
           "IdOeu": "8",
           "path": "./8.jpg",
-          "id_ar": "2",
+          "IdAr": "2",
           "titre": "La dame à l'hermine",
           "description": ""
       },
       {
           "IdOeu": "9",
           "path": "./9.jpg",
-          "id_ar": "3",
+          "IdAr": "3",
           "titre": "La reine Isabeau",
           "description": ""
       },
       {
           "IdOeu": "10",
           "path": "./10.jpg",
-          "id_ar": "3",
+          "IdAr": "3",
           "titre": "Paysage méditerranéen",
           "description": ""
       },
       {
           "IdOeu": "11",
           "path": "./11.jpg",
-          "id_ar": "3",
+          "IdAr": "3",
           "titre": "Cruche, bol et citron",
           "description": ""
       },
       {
           "IdOeu": "12",
           "path": "./12.jpg",
-          "id_ar": "3",
+          "IdAr": "3",
           "titre": "Portrait de Dora Maar",
           "description": ""
       }
