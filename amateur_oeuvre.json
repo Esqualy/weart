@@ -1,18 +1,8 @@
-{
-    "1": {
-        "pseudo": "ninjaturtle3",
-        "oeuvres": ["3", "1", "2"]
-    },
-    "2": {
-        "pseudo": "pantagru3l",
-        "oeuvres": ["7", "5"]
-    },
-    "3": {
-        "pseudo": "pseudocool",
-        "oeuvres": ["11"]
-    },
-    "4": {
-        "pseudo": "calclibre",
-        "oeuvres": ["9", "4"]
-    }
-}
+[
+    {"IsAm": 1, "IdOeu": 2},
+    {"IsAm": 1, "IdOeu": 3},
+    {"IsAm": 2, "IdOeu": 5},
+    {"IdAm": 2, "IdOeu": 9},
+    {"IdAm": 2, "IdOeu": 7},
+    {"IdAm": 3, "IdOeu": 10},
+]
