@@ -16,8 +16,8 @@ pip install numpy
 # Sys. Admin :
 **VPS KVM** :
 User : root
-MDP : tR7gB1x2
-IP : 89.213.140.99
+MDP : F0AO4Vgqg@g25#
+IP : 83.150.217.109
 
 [Lien Hébergeur](https://adkynet.com)
 
