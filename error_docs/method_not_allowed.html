@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erreur 405 - WeArt</title>
+    <link href="/error_docs/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='weartlogo.jpg') }}" alt="WeArt Logo" class="logo">
+        <h1>405</h1>
+        <p>Erreur 405 : Méthode non autorisée. La méthode HTTP utilisée n'est pas autorisée pour cette ressource.</p>
+        <p>Si le problème persiste, merci de contacter <a href="mailto:supportweb@we-art.app">supportweb@we-art.app</a>.</p>
+        <a href="https://we-art.app/" class="btn-home">Retour à l'accueil</a>
+    </div>
+</body>
+</html>
