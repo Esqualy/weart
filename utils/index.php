@@ -1,6 +1,6 @@
 <?php
 // PORT 5000 => CDN.WE-ART.APP | PORT 8000 => WE-ART.APP
-$flask_url = 'http://89.213.140.99:5000';
+$flask_url = 'http://83.150.217.109:5000';
 
 $ch = curl_init();
 
