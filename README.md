@@ -19,7 +19,7 @@ User : root
 MDP : tR7gB1x2
 IP : 89.213.140.99
 
-[Lien Hébergeur](https://xxx.fr)
+[Lien Hébergeur](https://adkynet.com)
 
 **VPS Storage** :
 User : root
@@ -27,3 +27,7 @@ MDP : HT3j02YGbL
 IP : 93.127.158.145
 
 [Lien Hébergeur](https://pulseheberg.com/)
+
+
+Nom de domaine et plesk ;
+[Lien Hébergeur](https://adkynet.com)
