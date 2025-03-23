@@ -1,3 +1,18 @@
+"""
+ajouter une description du rôle de ce module dans le projet entier
+ajouter une description succinte de son fonctionnement
+Il me semble que tu fais essentiellement deux choses dans ce module : 
+1. construire la matrice de similarités avec ton réseau de neurones ;
+1. proposer un algorithme de suggestion basé sur cette matrice de similarités
+
+Pour plus de clarté et de modularité, il me semble qu'il serait bon :
+1. de mettre le traitement qui conduit à la matrice de similarité dans un fichier
+1. Peut-être écrire la matrice de similarités dans un fichier à part
+1. Enfin, dans un troisième fichier, rédiger sous forme d'une def l'algo de suggestions basé sur l'IA
+
+Ainsi, si on imagine une interface admin qui permet d'ajouter une oeuvre. A part déposer le fichier image, on aura la mise à jour des json, et le recalcul de la matrice de similarité
+Ensuite, la fonction suggestions pourra être appelée (à quel moment d'ailleurs ? et depuis quelle vue ?)
+"""
 import torch
 import clip
 from PIL import Image
