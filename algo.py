@@ -1,11 +1,11 @@
-##############IMPORTS
-
+"""
+rajouter une description du rôle de ce module dans le projet entier
+et une description succinte de son fonctionnement
+"""
 from requetes import like_amateur, auteur, oeuvres_auteur_liké
 
-
 ##############VARS
-
-idAmateurMain = input("ID MAIN")
+idAmateurMain = input("ID MAIN") # ??????????????????
 idOeuvresLikees = []
 idArtistsLikes = [] #Attention, par le biais des oeuvres ci-dessus
 idOeuvresArtists = [] #Attention, toutes les oeuvres des ArtistsLikes, y compris les OeuvresLikees
@@ -15,8 +15,6 @@ idOeuvresLikeesParAmateursOeuvresLikees = []
 idOeuvresAProposer1 = []
 idOeuvresAProposer2 = []
 idOeuvresAproposerFinal = []
-
-
 ##############DEFS
 
 def oeuvres_auteurs(idOeuvresLikees):
@@ -26,7 +24,6 @@ def oeuvres_auteurs(idOeuvresLikees):
     for i in idOeuvresLikees:
         act.append(auteur(i))
     return act
-
 
 def selection_1(idOeuvresArtists, idOeuvresLikees)-> list[int]:
     '''Retranche les idOeuvresLikees aux idOeuvresArtists (dans le but de les mettre dans idOeuvresAProposer1)
@@ -46,7 +43,6 @@ def selection_2():
             act.append(i)
     return act
 
-
 def anti_doublons(idOeuvresAProposer1, idOeuvresAProposer2):
     act = []
     if len(idOeuvresAProposer1) > len(idOeuvresAProposer2):
@@ -58,24 +54,16 @@ def anti_doublons(idOeuvresAProposer1, idOeuvresAProposer2):
             if not idOeuvresAProposer2[i] in idOeuvresAProposer1:
                 act.append(idOeuvresAProposer2[i])
     return act
-
-
-##############CODE
+############## CODE
 
 idOeuvresAProposer1 = selection_1(idOeuvresArtists, idOeuvresLikees)
-
 ### idOeuvresAProposerFinal = list(set(idOeuvresAProposer1) | set(idOeuvresAProposer2))
-
 idOeuvresLikees = like_amateur(idAmateurMain)
 idOeuvresLikees.sort()
-
 idOeuvresArtists = oeuvres_auteurs(idOeuvresLikees)
 idArtistsLikes.sort()
-
 idOeuvresArtists = oeuvres_auteur_liké(idArtistsLikes)
 idOeuvresArtists.sort()
-
 idAmateurOeuvresLikees.sort()
 idOeuvresLikeesParAmateursOeuvresLikees.sort()
-
 idOeuvresAproposerFinal = anti_doublons(idOeuvresAProposer1, idOeuvresAProposer2)
