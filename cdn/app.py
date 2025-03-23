@@ -1,69 +1,94 @@
-from flask import Flask, jsonify, Response, render_template
+from flask import Flask, jsonify, Response, request, render_template
 import paramiko
 import mimetypes
 
-app = Flask(__name__, template_folder="templates", static_folder="static")  
+app = Flask(__name__)
 
+# 🔒 API KEY pour restreindre l'accès
+API_KEY = "mon_api_key_securisee"
+
+# 🎯 Connexion SFTP
 SFTP_HOST = '93.127.158.145'
 SFTP_PORT = 22
 SFTP_USER = 'root'
 SFTP_PASS = 'HT3j02YGbL'
+BASE_DIRECTORY = "/root"
 
-BASE_DIRECTORY = "/root"  
+def get_sftp_client():
+    """Crée et retourne une connexion SFTP"""
+    transport = paramiko.Transport((SFTP_HOST, SFTP_PORT))
+    transport.connect(username=SFTP_USER, password=SFTP_PASS)
+    return paramiko.SFTPClient.from_transport(transport)
 
-def list_files_sftp(directory):
-    try:
-        transport = paramiko.Transport((SFTP_HOST, SFTP_PORT))
-        transport.connect(username=SFTP_USER, password=SFTP_PASS)
-        sftp = paramiko.SFTPClient.from_transport(transport)
-        
-        file_list = sftp.listdir(directory)
-        sftp.close()
-        transport.close()
-        return file_list
-    except Exception as e:
-        print(f"Erreur lors de la récupération de la liste des fichiers : {e}")
-        return []
-
-@app.route('/ressources/', defaults={'filename': ''})
-@app.route('/ressources/<path:filename>')
+@app.route("/ressources/<path:filename>")
 def serve_files(filename):
+    """Permet d'accéder à des fichiers via SFTP"""
+
+    if filename.endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg')):  
+        return serve_public_files(filename)
+
+    api_key = request.headers.get("Authorization")
+    if api_key != f"Bearer {API_KEY}":
+        return render_template('forbidden.html'), 403  
+
+    return serve_private_files(filename)
+
+def serve_public_files(filename):
+    """Permet d'envoyer les fichiers publics sans vérifier la clé API"""
     remote_path = f"{BASE_DIRECTORY}/{filename}".rstrip('/')
 
     try:
-        transport = paramiko.Transport((SFTP_HOST, SFTP_PORT))
-        transport.connect(username=SFTP_USER, password=SFTP_PASS)
-        sftp = paramiko.SFTPClient.from_transport(transport)
-        
+        sftp = get_sftp_client()
+
         try:
             stat = sftp.stat(remote_path)
-            
-            if stat.st_mode & 0o40000:  # Dossier
-                file_list = sftp.listdir(remote_path)
-                sftp.close()
-                transport.close()
-                return jsonify(file_list)
-            else:
-                mime_type, _ = mimetypes.guess_type(remote_path)
-                if not mime_type:
-                    mime_type = "application/octet-stream" 
 
-                file_obj = sftp.file(remote_path, 'rb')
+            # 🖼️ Si c'est un fichier → Envoie le fichier
+            mime_type, _ = mimetypes.guess_type(remote_path)
+            mime_type = mime_type if mime_type else "application/octet-stream"
+
+            with sftp.file(remote_path, 'rb') as file_obj:
                 file_data = file_obj.read()
-                file_obj.close()
-                sftp.close()
-                transport.close()
-                
-                return Response(file_data, content_type=mime_type)
-        
+
+            sftp.close()
+            return Response(file_data, content_type=mime_type)
+
         except FileNotFoundError:
             sftp.close()
-            transport.close()
-            return render_template('not_found.html'), 404  
+            return render_template('not_found.html'), 404
 
     except Exception as e:
-        return render_template('internal_server_error.html', error=str(e)), 500  
+        return render_template('internal_server_error.html', error=str(e)), 500
 
+
+def serve_private_files(filename):
+    """Permet d'envoyer les fichiers privés avec vérification de clé API"""
+    remote_path = f"{BASE_DIRECTORY}/{filename}".rstrip('/')
+
+    try:
+        sftp = get_sftp_client()
+
+        try:
+            stat = sftp.stat(remote_path)
+
+            # 🖼️ Si c'est un fichier → Envoie le fichier
+            mime_type, _ = mimetypes.guess_type(remote_path)
+            mime_type = mime_type if mime_type else "application/octet-stream"
+
+            with sftp.file(remote_path, 'rb') as file_obj:
+                file_data = file_obj.read()
+
+            sftp.close()
+            return Response(file_data, content_type=mime_type)
+
+        except FileNotFoundError:
+            sftp.close()
+            return render_template('not_found.html'), 404
+
+    except Exception as e:
+        return render_template('internal_server_error.html', error=str(e)), 500
+
+# 🌐 Gestion des erreurs HTTP
 @app.errorhandler(400)
 def bad_request(error):
     return render_template('bad_request.html'), 400  
@@ -109,4 +134,4 @@ def maintenance(error):
     return render_template('maintenance.html'), 503 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
