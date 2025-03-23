@@ -4,8 +4,7 @@ import mimetypes
 
 app = Flask(__name__)
 
-# 🔒 API KEY pour restreindre l'accès
-API_KEY = "mon_api_key_securisee"
+API_KEY = "F0AO4Vgqg@g25#"
 
 # 🎯 Connexion SFTP
 SFTP_HOST = '93.127.158.145'
