@@ -1,4 +1,4 @@
-from requetes import like_amateur, auteur, oeuvres_auteur_liké #le fichier requetes a été créé par @artiste
+from requetes import like_amateur, auteur, oeuvres_auteurs #le fichier requetes a été créé par @Noé Callejon, elle a pour but de créer des fonctions qui permettent d'interagir avec les json.
 
 ##############VARS
 idAmateurMain = input("ID MAIN") # ??????????????????
@@ -11,9 +11,10 @@ idOeuvresLikeesParAmateursOeuvresLikees = []
 idOeuvresAProposer1 = []
 idOeuvresAProposer2 = []
 idOeuvresAproposerFinal = []
+
 ##############DEFS
 
-def oeuvres_auteurs(idOeuvresLikees):
+def user_oeuvres_artists(idOeuvresLikees):
     '''Renvoie une liste d'ID des artists des likes de l'user
     '''
     act = []
@@ -39,27 +40,21 @@ def selection_2():
             act.append(i)
     return act
 
-def anti_doublons(idOeuvresAProposer1, idOeuvresAProposer2):
-    act = []
-    if len(idOeuvresAProposer1) > len(idOeuvresAProposer2):
-        for i in range(len(idOeuvresAProposer1)):
-            if not idOeuvresAProposer1[i] in idOeuvresAProposer2:
-                act.append(idOeuvresAProposer1[i])
-    else :
-        for i in range(len(idOeuvresAProposer2)):
-            if not idOeuvresAProposer2[i] in idOeuvresAProposer1:
-                act.append(idOeuvresAProposer2[i])
-    return act
 ############## CODE
 
 idOeuvresAProposer1 = selection_1(idOeuvresArtists, idOeuvresLikees)
-### idOeuvresAProposerFinal = list(set(idOeuvresAProposer1) | set(idOeuvresAProposer2))
 idOeuvresLikees = like_amateur(idAmateurMain)
 idOeuvresLikees.sort()
+idArtistsLikes = user_oeuvres_artists(idOeuvresLikees)
+idOeuvresLikees.sort()
 idOeuvresArtists = oeuvres_auteurs(idOeuvresLikees)
-idArtistsLikes.sort()
-idOeuvresArtists = oeuvres_auteur_liké(idArtistsLikes)
 idOeuvresArtists.sort()
 idAmateurOeuvresLikees.sort()
 idOeuvresLikeesParAmateursOeuvresLikees.sort()
-idOeuvresAproposerFinal = anti_doublons(idOeuvresAProposer1, idOeuvresAProposer2)
+
+idOeuvresAProposer1 = selection_1(idOeuvresArtists, idOeuvresLikees)
+
+
+idOeuvresAProposerFinal = list(set(idOeuvresAProposer1) | set(idOeuvresAProposer2))
+print(idOeuvresAProposer1)
+print(idOeuvresAProposer2)
