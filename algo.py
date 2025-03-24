@@ -1,8 +1,4 @@
-"""
-rajouter une description du rôle de ce module dans le projet entier
-et une description succinte de son fonctionnement
-"""
-from requetes import like_amateur, auteur, oeuvres_auteur_liké
+from requetes import like_amateur, auteur, oeuvres_auteur_liké #le fichier requetes a été créé par @artiste
 
 ##############VARS
 idAmateurMain = input("ID MAIN") # ??????????????????
