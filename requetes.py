@@ -25,6 +25,19 @@ def like_amateur(IdAm):
             res.append(d["IdOeu"])
     return res
 
+def like_amateurs(amateurs):
+    """
+    Renvoie la liste des ID d'œuvres likées par un amateur.
+    """
+    res = []
+    with open("amateur_oeuvre.json", "r") as f:
+        data = json.load(f)
+    for IdAm in amateurs:
+        for d in data:
+            if d["IdAm"] == IdAm:
+                res.append(d["IdOeu"])
+    return res
+
 def auteur(IdOeu):
     """
     Renvoie l'ID de l'artiste ayant créé l'œuvre spécifiée.
