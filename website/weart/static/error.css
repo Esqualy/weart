@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    background: url("bg.png"), linear-gradient(to bottom, #1a1a1a, #000000);
+    background-size: cover;
+    background-position: center;
+}
+.container {
+    max-width: 600px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(255, 105, 180, 0.2);
+}
+.logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+h1 {
+    font-size: 100px;
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    text-shadow: 3px 3px 10px rgba(255, 105, 180, 0.7);
+}
+p {
+    font-size: 18px; 
+    margin-bottom: 20px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 500px; 
+    margin: 0 auto 20px;
+}
+.btn-home {
+    display: inline-block;
+    padding: 15px 30px;
+    font-size: 18px;
+    color: white;
+    background: linear-gradient(to right, #ff4b8a, #ff0099);
+    border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
+}
+.btn-home:hover {
+    background: linear-gradient(to right, #ff0099, #ff4b8a);
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(255, 105, 180, 0.5);
+}
