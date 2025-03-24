@@ -1,4 +1,4 @@
-from requetes import like_amateur, auteur, oeuvres_auteurs #le fichier requetes a été créé par @Noé Callejon, elle a pour but de créer des fonctions qui permettent d'interagir avec les json.
+from requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs #le fichier requetes a été créé par @Noé Callejon, elle a pour but de créer des fonctions qui permettent d'interagir avec les json.
 
 ##############VARS
 idAmateurMain = input("ID MAIN") # ??????????????????
@@ -31,12 +31,12 @@ def selection_1(idOeuvresArtists, idOeuvresLikees)-> list[int]:
             act.append(idOeuvresArtists[i])
     return act
 
-def selection_2():
+def selection_2(idOeuvresLikeesParAmateursOeuvresLikees, idOeuvresLikees):
     '''Propose les oeuvres des autres amateurs ayant des oeuvres likées en commun avec le main User
     '''
     act = []
     for i in idOeuvresLikeesParAmateursOeuvresLikees:
-        if not i in idOeuvresLikeesParAmateursOeuvresLikees:
+        if not i in idOeuvresLikees:
             act.append(i)
     return act
 
@@ -50,10 +50,11 @@ idOeuvresLikees.sort()
 idOeuvresArtists = oeuvres_auteurs(idOeuvresLikees)
 idOeuvresArtists.sort()
 idAmateurOeuvresLikees.sort()
+idOeuvresLikeesParAmateursOeuvresLikees = like_amateurs(idAmateurOeuvresLikees)
 idOeuvresLikeesParAmateursOeuvresLikees.sort()
 
 idOeuvresAProposer1 = selection_1(idOeuvresArtists, idOeuvresLikees)
-
+idOeuvresAProposer2 = selection_2(idOeuvresLikeesParAmateursOeuvresLikees, idOeuvresLikees)
 
 idOeuvresAProposerFinal = list(set(idOeuvresAProposer1) | set(idOeuvresAProposer2))
 print(idOeuvresAProposer1)
