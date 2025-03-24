@@ -1,8 +1,8 @@
 [
-    {"IsAm": 1, "IdOeu": 2},
-    {"IsAm": 1, "IdOeu": 3},
-    {"IsAm": 2, "IdOeu": 5},
+    {"IdAm": 1, "IdOeu": 2},
+    {"IdAm": 1, "IdOeu": 3},
+    {"IdAm": 2, "IdOeu": 5},
     {"IdAm": 2, "IdOeu": 9},
     {"IdAm": 2, "IdOeu": 7},
-    {"IdAm": 3, "IdOeu": 10},
+    {"IdAm": 3, "IdOeu": 10}
 ]
