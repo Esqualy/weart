@@ -66,14 +66,7 @@
       selectedImages.push(imageId);
     }
   }
-
-  // Ajouter un événement de clic sur chaque image
-  document.querySelectorAll('.image-container img').forEach(img => {
-    img.addEventListener('click', function() {
-      toggleSelection(this.id);
-    });
-  });
-
+    
   // Fonction pour sauvegarder les préférences dans le localStorage
   function savePreferences() {
     if (selectedImages.length > 0) {
