@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - WeArt</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.we-art.art/static/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="https://cdn.we-art.art/static/ressources/all/favicon.png">
+</head>
+<body>
+    <div class="container">
+        <img src="https://cdn.we-art.art/static/weartlogo.jpg" alt="Logo" class="logo">
+        
+        <h1>Inscription</h1>
+        
+        <form method="post" id="registrationForm">
+            <!-- Section des informations personnelles -->
+            <div class="form-section active" id="personalInfo">
+                <h2>Informations personnelles</h2>
+                <label for="nom">Nom :</label>
+                <input type="text" name="nom" required><br>
+
+                <label for="prenom">Prénom :</label>
+                <input type="text" name="prenom" required><br>
+
+                <label for="mail">E-mail :</label>
+                <input type="email" name="mail" required><br>
+
+                <label for="ddn">Date de naissance :</label>
+                <input type="date" name="ddn" required><br>
+
+                <label for="genre">Genre :</label>
+                <select name="genre" required>
+                    <option value="Homme">Homme</option>
+                    <option value="Femme">Femme</option>
+                    <option value="Autre">Autre</option>
+                </select><br>
+            </div>
+
+            <!-- Section du mot de passe -->
+            <div class="form-section" id="passwordSection">
+                <h2>Mot de passe</h2>
+                <label for="password">Mot de passe :</label>
+                <div class="password-container">
+                    <input type="password" name="password" id="password" required>
+                    <button type="button" class="btn-toggle"
+                        onmousedown="togglePassword(true)" 
+                        onmouseup="togglePassword(false)" 
+                        onmouseleave="togglePassword(false)">
+                        &#128065;
+                    </button>
+                </div>
+            </div>
+
+            <!-- Section du type de compte -->
+            <div class="form-section" id="accountTypeSection">
+                <h2>Type de compte</h2>
+                <label for="user_type">Type de compte :</label>
+                <select name="user_type" required>
+                    <option value="artiste">Artiste</option>
+                    <option value="amateur">Amateur</option>
+                </select><br>
+            </div>
+
+            <!-- Section du pseudo -->
+            <div class="form-section" id="pseudoSection">
+                <h2>Pseudo</h2>
+                <label for="pseudo">Pseudo :</label>
+                <input type="text" name="pseudo" required><br>
+            </div>
+
+            <!-- Flash messages déplacés ici -->
+            <h4>
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        <ul>
+                            {% for category, message in messages %}
+                                <li class="flash-message {{ category }}">{{ message|safe }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </h4>
+
+            <!-- Boutons de navigation et inscription -->
+            <div class="form-navigation">
+                <button type="button" id="prevBtn" onclick="navigateForm(-1)" style="display: none;">Précédent</button>
+                <button type="button" id="nextBtn" onclick="navigateForm(1)">Suivant</button>
+                <button type="submit" class="btn-submit" id="submitBtn" style="display: none;">S'inscrire</button>
+            </div>
+        </form>
+
+        <p><a href="{{ url_for('signin') }}" class="btn-signup">Se connecter</a></p>
+    </div>
+
+    <script>
+        let currentStep = 0; // Étape actuelle
+
+        // Affiche la section correspondante à l'étape actuelle
+        function showStep(step) {
+            const sections = document.querySelectorAll('.form-section');
+            sections.forEach((section, index) => {
+                section.classList.remove('active');
+                if (index === step) {
+                    section.classList.add('active');
+                }
+            });
+
+            // Gestion des boutons Précédent et Suivant
+            document.getElementById('prevBtn').style.display = (step === 0) ? 'none' : 'inline-block';
+            document.getElementById('nextBtn').textContent = (step === sections.length - 1) ? 'S\'inscrire' : 'Suivant';
+
+            // Affiche le bouton "S'inscrire" seulement à la dernière étape
+            if (step === sections.length - 1) {
+                document.getElementById('nextBtn').style.display = 'none';  // Masquer le bouton "Suivant"
+                document.getElementById('submitBtn').style.display = 'inline-block';  // Afficher le bouton "S'inscrire"
+            } else {
+                document.getElementById('nextBtn').style.display = 'inline-block';  // Afficher "Suivant"
+                document.getElementById('submitBtn').style.display = 'none';  // Masquer "S'inscrire"
+            }
+        }
+
+        // Gère la navigation entre les étapes
+        function navigateForm(stepChange) {
+            const sections = document.querySelectorAll('.form-section');
+            if (currentStep + stepChange >= 0 && currentStep + stepChange < sections.length) {
+                currentStep += stepChange;
+                showStep(currentStep);
+            }
+        }
+
+        // Initialise le formulaire sur la première étape
+        showStep(currentStep);
+
+        // Fonction pour afficher/masquer le mot de passe
+        function togglePassword(show) {
+            const passwordField = document.getElementById("password");
+            passwordField.type = show ? "text" : "password";
+        }
+    </script>
+</body>
+</html>

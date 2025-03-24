@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="https://cdn.we-art.art/static/css/styles.css">
+    <title>Page d'accueil - WeArt</title>
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.we-art.art">
+    <meta property="og:title" content="Bienvenue sur We-Art">
+    <meta property="og:description" content="We-Art est une plateforme créative où les artistes et les amateurs se rencontrent. Découvrez, partagez et collaborez sur des projets uniques.">
+    <meta property="og:image" content="https://cdn.we-art.art/static/weartlogo.jpg">
+
+    <!-- Twitter Card Metadata -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bienvenue sur We-Art">
+    <meta name="twitter:description" content="We-Art est une plateforme créative où les artistes et les amateurs se rencontrent. Découvrez, partagez et collaborez sur des projets uniques.">
+    <meta name="twitter:image" content="https://cdn.we-art.art/static/weartlogo.jpg">
+
+    <!-- Icons (Utilisation de https://icon-sets.iconify.design/) -->
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+
+    <style>
+        /* Styles pour la barre de menu fixe */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            background: #1e1e1e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .menu-item {
+            margin: 15px 0;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .menu-item:hover {
+            transform: scale(1.2);
+            color: #ff6600;
+        }
+
+        /* Style du contenu principal */
+        .content {
+            margin-left: 80px;
+            padding: 20px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px;
+            background: #1e1e1e;
+            color: white;
+        }
+
+        .social-links img {
+            width: 30px;
+            height: 30px;
+            margin-top: 10px;
+        }
+
+        .legal-links a {
+            color: #ff6600;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Barre de menu à gauche -->
+    <div class="sidebar">
+        <a href="{{ url_for('index') }}" class="menu-item"><i class="iconify" data-icon="ic:baseline-home"></i></a>
+        <a href="{{ url_for('search') }}" class="menu-item"><i class="iconify" data-icon="ic:baseline-search"></i></a>
+
+        {% if user_role == 'artiste' %}
+            <a href="{{ url_for('upload') }}" class="menu-item"><i class="iconify" data-icon="ic:baseline-upload"></i></a>
+        {% endif %}
+
+        <a href="{{ url_for('account') }}" class="menu-item"><i class="iconify" data-icon="ic:baseline-account-circle"></i></a>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="content">
+        <h1>Bienvenue, {{ username }} !</h1>
+
+        {% if user_role == 'artiste' %}
+            <p>Vous êtes connecté en tant qu' <strong>Artiste</strong>. Partagez vos œuvres et collaborez avec la communauté !</p>
+        {% elif user_role == 'amateur' %}
+            <p>Vous êtes connecté en tant qu' <strong>Amateur</strong>. Découvrez et soutenez les artistes talentueux !</p>
+        {% else %}
+            <p>Bienvenue sur We-Art !</p>
+        {% endif %}
+
+        <p><a href="{{ url_for('logout') }}">Se déconnecter</a></p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; We Art 2025</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/weart_app?igsh=cTJ4ejF0bXprNG9m" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/1200px-Instagram_logo_2022.svg.png" alt="Instagram" class="social-icon">
+                </a>
+            </div>
+            <div class="legal-links">
+                <a href="{{ url_for('terms_of_service') }}" target="_blank">Conditions d'utilisation</a> | 
+                <a href="{{ url_for('privacy_policy') }}" target="_blank">Politique de confidentialité</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

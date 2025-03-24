@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erreur 404 - WeArt</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='error.css') }}">
+    <link rel="icon" type="image/x-icon" href="https://cdn.we-art.art/static/ressources/all/favicon.png">
+</head>
+<body>
+    <div class="container">
+        <img src="{{ url_for('static', filename='weartlogo.jpg') }}" alt="WeArt Logo" class="logo">
+        <h1>404</h1>
+        <p>Erreur 404 : La page que vous recherchez n'existe pas ou a été déplacée. Veuillez vérifier l'URL et réessayer.</p>
+        <a href="https://we-art.art/" class="btn-home">Retour à l'accueil</a>
+    </div>
+</body>
+</html>
