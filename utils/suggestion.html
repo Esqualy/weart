@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sélectionnez vos préférences</title>
+    <style>
+        body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .image-container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+    .image-container img {
+      width: 150px;
+      height: 150px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: transform 0.3s, border 0.3s
+    }
+    .image-container img:hover {
+      transform: scale(1.1);
+    }
+    .selected {
+      border: 3px solid blue;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+</html><h1>Bienvenue sur WeArt</h1>
+<p>Sélectionnez vos préférences artistiques</p>
+
+<div class="image-container">
+    <img src="image/peinture_classique.jpg" alt="Peinture Classique" id="classic">
+    <img src="image/art_numerique.jpg" alt="Art Numérique" id="digital">
+    <img src="image/sculpture.jpg" alt="Sculpture" id="sculpture">
+    <img src="image/art_abstrait.jpg" alt="Art Abstrait" id="abstract">
+    <img src="image/art_modern.jpg" alt="Art Moderne" id="modern">
+    <img src="image/street_art.jpg" alt="Street Art" id="street">
+</div>
+
+<button onclick="savePreferences()">Valider mes préférences</button>
+
+<script>
+  // Liste des images sélectionnées
+  let selectedImages = [];
+
+  // Fonction pour sélectionner/désélectionner les images
+  function toggleSelection(imageId) {
+    const image = document.getElementById(imageId);
+    if (image.classList.contains('selected')) {
+      image.classList.remove('selected');
+      selectedImages = selectedImages.filter(id => id !== imageId);
+    } else {
+      image.classList.add('selected');
+      selectedImages.push(imageId);
+    }
+  }
+
+  // Ajouter un événement de clic sur chaque image
+  document.querySelectorAll('.image-container img').forEach(img => {
+    img.addEventListener('click', function() {
+      toggleSelection(this.id);
+    });
+  });
+
+  // Fonction pour sauvegarder les préférences dans le localStorage
+  function savePreferences() {
+    if (selectedImages.length > 0) {
+      localStorage.setItem('userPreferences', JSON.stringify(selectedImages));
+      alert('Vos préférences ont été sauvegardées !');
+    } else {
+      alert('Veuillez sélectionner au moins une image.');
+    }
+  }
+</script>
+</body>
+</html>
