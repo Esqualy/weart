@@ -33,6 +33,20 @@
         {% else %}
             <p>Bienvenue sur We-Art !</p>
         {% endif %}
+        
+        <!-- Section des recommandations -->
+        <h2>Recommandations pour vous</h2>
+        <div class="recommendations">
+            {% if recommandations %}
+            <ul>
+                {% for rec in recommandations %}
+                    <li>{{ rec }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucune recommandation pour le moment.</p>
+        {% endif %}        
+        </div>
     </div>
     <footer>
         <div class="footer-content">
@@ -93,6 +107,22 @@
         flex: 1;
     }
     
+    .recommendations {
+        margin-top: 20px;
+    }
+    
+    .recommendations ul {
+        list-style-type: none;
+        padding: 0;
+    }
+    
+    .recommendations ul li {
+        background: #f4f4f4;
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    
     footer {
     text-align: center;
     padding: 10px;
@@ -105,27 +135,27 @@
 
 .footer-content {
     display: flex;
-    align-items: center; /* Aligne les éléments sur la même ligne */
-    justify-content: center; /* Centre les éléments horizontalement */
+    align-items: center;
+    justify-content: center;
     padding: 0 20px;
     width: 100%;
-    flex-wrap: wrap; /* Permet au texte de se plier sur la ligne suivante si nécessaire */
+    flex-wrap: wrap;
 }
 
 .social-links {
-    margin-right: 10px; /* Espace entre l'icône et le texte */
+    margin-right: 10px;
 }
 
 .footer-content p {
     margin: 0;
-    margin-left: 10px; /* Espace entre l'icône Instagram et le texte */
+    margin-left: 10px;
 }
 
 .legal-links {
-    margin-left: auto; /* Pousse les liens à droite */
-    white-space: nowrap; /* Empêche le texte de se casser en plusieurs lignes */
-    margin-left: 20px; /* Espace à gauche pour ne pas trop coller */
-    margin-right: 20px; /* Espace à droite pour éviter que les liens touchent le bord */
+    margin-left: auto;
+    white-space: nowrap;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .legal-links a {
@@ -134,7 +164,7 @@
 }
 
 .legal-links a:hover {
-    color: #ff69b4; /* Rose au survol */
+    color: #ff69b4;
 }
 
 .social-links a {
