@@ -62,3 +62,9 @@ def oeuvres_similaires(titres_oeuvres, similarity_matrix, s_similarité=SeuildeS
                     liste_similaire.append((titres_oeuvres[j], score))
         oeuvres_similaires[titres_oeuvres[i]] = liste_similaire
     return oeuvres_similaires
+
+def suggestion_amateurs(IdAm):
+    """
+    Cherche les oeuvres likées par l'amateur, trouve les amateurs ayant likés ces oeuvres 
+    et propose des oeuvres likées par ces amateurs en renvoyant une liste d'IdOeu "suggérées".
+    """
