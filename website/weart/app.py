@@ -1,8 +1,11 @@
 from flask import Flask, request, redirect, url_for, render_template, session, flash, render_template_string
+from requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs
+from algo import selection_1, selection_2, user_oeuvres_artists
+from datetime import datetime
+
 import bcrypt
 import json
 import os
-from datetime import datetime
 import random 
 import paramiko
 
@@ -103,15 +106,42 @@ def maintenance_required(f):
     wrapper.__name__ = f.__name__
     return wrapper
 
-@app.route("/")
-@maintenance_required
+def get_image_url_for_oeuvre(oeuvre_id):
+    # Logique pour récupérer l'URL de l'image à partir de l'ID de l'œuvre
+    # Exemple simple : retourner une URL fictive
+    # Assure-toi d'avoir un modèle ou une base de données pour récupérer cette information
+    return f"http://127.0.0.1:5000/static/{oeuvre_id}.jpg"
+
+
+@app.route('/')
 def index():
     if 'username' not in session:
         return redirect(url_for('signin'))
     
-    user_id = session.get('user_id')  
+    user_id = session.get('user_id')
 
-    return render_template("index.html", username=session['username'], user_role=session.get('user_role'), user_id=user_id)
+    idAmateurMain = user_id
+    idOeuvresLikees = like_amateur(idAmateurMain)
+    idArtistsLikes = user_oeuvres_artists(idOeuvresLikees)
+    idOeuvresArtists = oeuvres_auteurs(idArtistsLikes)
+    idOeuvresAProposer1 = selection_1(idOeuvresArtists, idOeuvresLikees)
+    idOeuvresLikeesParAmateursOeuvresLikees = like_amateurs(idOeuvresLikees)
+    idOeuvresAProposer2 = selection_2(idOeuvresLikeesParAmateursOeuvresLikees, idOeuvresLikees)
+
+    idOeuvresAProposerFinal = list(set(idOeuvresAProposer1) | set(idOeuvresAProposer2))
+
+    # Pour chaque ID d'œuvre, récupérer l'URL de l'image
+    oeuvres_avec_images = []
+    for oeuvre_id in idOeuvresAProposerFinal:
+        image_url = get_image_url_for_oeuvre(oeuvre_id)  # Assure-toi que cette fonction existe
+        oeuvres_avec_images.append({"id": oeuvre_id, "image_url": image_url})
+
+    # Passer la variable oeuvres_avec_images au template
+    return render_template("index.html", 
+                        username=session['username'], 
+                        user_role=session.get('user_role'), 
+                        user_id=user_id, 
+                        recommandations=oeuvres_avec_images)
 
 @app.route("/signin", methods=["GET", "POST"])
 @maintenance_required
