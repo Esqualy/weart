@@ -15,7 +15,7 @@ def like(IdAm, IdOeu):
 
 def like_amateur(IdAm):
     """
-    Renvoie la liste des ID d'œuvres likées par un amateur.
+    Renvoie la liste des ID d'œuvres likées par un amateur .
     """
     res = []
     with open("amateur_oeuvre.json", "r") as f:
@@ -27,7 +27,7 @@ def like_amateur(IdAm):
 
 def like_amateurs(amateurs):
     """
-    Renvoie la liste des ID d'œuvres likées par un amateur.
+    Renvoie la liste des ID d'œuvres likées par des amateurs.
     """
     res = []
     with open("amateur_oeuvre.json", "r") as f:
