@@ -107,9 +107,6 @@ def maintenance_required(f):
     return wrapper
 
 def get_image_url_for_oeuvre(oeuvre_id):
-    # Logique pour récupérer l'URL de l'image à partir de l'ID de l'œuvre
-    # Exemple simple : retourner une URL fictive
-    # Assure-toi d'avoir un modèle ou une base de données pour récupérer cette information
     return f"http://127.0.0.1:5000/static/{oeuvre_id}.jpg"
 
 
