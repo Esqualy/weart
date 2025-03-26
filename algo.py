@@ -1,7 +1,7 @@
 from requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs, like_oeuvres #le fichier requetes a été créé par @Noé Callejon, elle a pour but de créer des fonctions qui permettent d'interagir avec les json.
 
 ##############VARS
-idAmateurMain = input("ID MAIN") # ??????????????????
+idAmateurMain = 2 # ??????????????????
 idOeuvresLikees = []
 idArtistsLikes = [] #Attention, par le biais des oeuvres ci-dessus
 idOeuvresArtists = [] #Attention, toutes les oeuvres des ArtistsLikes, y compris les OeuvresLikees
