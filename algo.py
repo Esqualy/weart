@@ -1,4 +1,4 @@
-from requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs #le fichier requetes a été créé par @Noé Callejon, elle a pour but de créer des fonctions qui permettent d'interagir avec les json.
+from requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs, like_oeuvres #le fichier requetes a été créé par @Noé Callejon, elle a pour but de créer des fonctions qui permettent d'interagir avec les json.
 
 ##############VARS
 idAmateurMain = input("ID MAIN") # ??????????????????
@@ -49,6 +49,7 @@ idArtistsLikes = user_oeuvres_artists(idOeuvresLikees)
 idOeuvresLikees.sort()
 idOeuvresArtists = oeuvres_auteurs(idOeuvresLikees)
 idOeuvresArtists.sort()
+idAmateurOeuvresLikees = like_oeuvres(idOeuvresLikees)
 idAmateurOeuvresLikees.sort()
 idOeuvresLikeesParAmateursOeuvresLikees = like_amateurs(idAmateurOeuvresLikees)
 idOeuvresLikeesParAmateursOeuvresLikees.sort()
@@ -59,3 +60,4 @@ idOeuvresAProposer2 = selection_2(idOeuvresLikeesParAmateursOeuvresLikees, idOeu
 idOeuvresAProposerFinal = list(set(idOeuvresAProposer1) | set(idOeuvresAProposer2))
 print(idOeuvresAProposer1)
 print(idOeuvresAProposer2)
+print(idOeuvresAProposerFinal)
