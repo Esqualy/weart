@@ -1,0 +1,170 @@
+ [
+   {
+    "IdAr": "1",
+    "pseudo": "Claude_Monet",
+    "password": "j'aimelepastel123",
+    "mail" : "monet.claude@gmail.com",
+    "ddn": "14111840"
+  },
+  {
+    "IdAr": "2",
+    "pseudo": "Leonardo_Da_Vinci",
+    "password": "Ilrigoresuperasemprel'ostacolo",
+    "mail" : "l.davinci@gmail.com",
+    "ddn": "14041452"
+  },
+ {
+    "IdAr": "3",
+    "pseudo": "Pablo_Picasso",
+    "password": "Quandjen'aipasdebleujemetsdurouge",
+    "mail" : "picasso.pablo@gmail.com",
+    "ddn": "25101881"
+  },
+  {
+    "IdAr": "4",
+    "pseudo": "JoanMiro",
+    "password": "artistesurr33l",
+    "mail": "mirojoan@gmail.com",
+    "ddn": "20041893"
+  },
+  {
+    "IdAr": "5",
+    "pseudo": "Hokusai",
+    "password": "vaguedartiste",
+    "mail": "hokusai.k@gmail.com",
+    "ddn": "31101760"
+  },
+  {
+    "IdAr": "6",
+    "pseudo": "AmeSauvage",
+    "password": "mysteryart",
+    "mail": "amesauvage@gmail.com",
+    "ddn": ""
+  },
+  {
+    "IdAr": "7",
+    "pseudo": "VanGogh",
+    "password": "tourn3sol",
+    "mail": "vangogh.art@gmail.com",
+    "ddn": "30031853"
+  },
+  {
+    "IdAr": "8",
+    "pseudo": "FridaKahlo",
+    "password": "colibri123",
+    "mail": "kahlofrida@gmail.com",
+    "ddn": "06071907"
+  },
+  {
+    "IdAr": "9",
+    "pseudo": "Magritte",
+    "password": "h0mm3s@nsf@c3",
+    "mail": "magritterene@gmail.com",
+    "ddn": "21111898"
+  },
+  {
+    "IdAr": "10",
+    "pseudo": "AndyWarhol",
+    "password": "popart42",
+    "mail": "warholandy@gmail.com",
+    "ddn": "06081928"
+  },
+  {
+    "IdAr": "11",
+    "pseudo": "Courbet",
+    "password": "r3al1sm3",
+    "mail": "courbetgustave@gmail.com",
+    "ddn": "10181819"
+  },
+  {
+    "IdAr": "12",
+    "pseudo": "Vermeer",
+    "password": "perl3bleu3",
+    "mail": "vermeerjan@gmail.com",
+    "ddn": "31101632"
+  },
+  {
+    "IdAr": "13",
+    "pseudo": "Botticelli",
+    "password": "venusb3auty",
+    "mail": "botticellisandro@gmail.com",
+    "ddn": "01031445"
+  },
+  {
+    "IdAr": "14",
+    "pseudo": "Munch",
+    "password": "l3cri2024",
+    "mail": "munch.edvard@gmail.com",
+    "ddn": "12121863"
+  },
+  {
+    "IdAr": "15",
+    "pseudo": "Dali",
+    "password": "surr3alisme!",
+    "mail": "dalimemories@gmail.com",
+    "ddn": "11051904"
+  },
+  {
+    "IdAr": "16",
+    "pseudo": "Arcimboldo",
+    "password": "fruits&faces",
+    "mail": "arcimboldo.g@gmail.com",
+    "ddn": "15261527"
+  },
+  {
+    "IdAr": "17",
+    "pseudo": "Klimt",
+    "password": "gold3npaint",
+    "mail": "klimtgustav@gmail.com",
+    "ddn": "14071862"
+  },
+  {
+    "IdAr": "18",
+    "pseudo": "Mucha",
+    "password": "artnouveau!",
+    "mail": "mucha.alphonse@gmail.com",
+    "ddn": "24071860"
+  },
+  {
+    "IdAr": "19",
+    "pseudo": "Kandinsky",
+    "password": "abstractWav3",
+    "mail": "kandinskyv@gmail.com",
+    "ddn": "16121866"
+  },
+  {
+    "IdAr": "20",
+    "pseudo": "FranzMarc",
+    "password": "bluehors3",
+    "mail": "franzmarc@gmail.com",
+    "ddn": "08021880"
+  },
+  {
+    "IdAr": "21",
+    "pseudo": "Renoir",
+    "password": "impr3ssion1sm3",
+    "mail": "renoirpierre@gmail.com",
+    "ddn": "25021841"
+  },
+  {
+    "IdAr": "22",
+    "pseudo": "Friedrich",
+    "password": "romanticSky",
+    "mail": "friedrichcaspar@gmail.com",
+    "ddn": "05091774"
+  },
+  {
+    "IdAr": "23",
+    "pseudo": "Fragonard",
+    "password": "rococoMaster",
+    "mail": "fragonard.jean@gmail.com",
+    "ddn": "05041732"
+  },
+  {
+    "IdAr": "24",
+    "pseudo": "Macke",
+    "password": "yellowJacket",
+    "mail": "mackeaugust@gmail.com",
+    "ddn": "03011887"
+  }
+]
