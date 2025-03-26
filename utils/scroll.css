@@ -1,0 +1,36 @@
+/* a ajouter au css du site je pense, si quelqu'un voudrais le faire*/
+
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.scroll-container {
+    width: 90%;
+    max-width: 400px;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-radius: 10px;
+    padding: 10px;
+    scroll-snap-type: x mandatory;
+    display: flex;
+    gap: 10px;
+}
+
+.gallery {
+    display: flex;
+    gap: 10px;
+}
+
+.gallery img {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    scroll-snap-align: center;
+    object-fit: cover;
+}
