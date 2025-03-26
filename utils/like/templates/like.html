@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oeuvre</title>
+    <link rel="stylesheet" href="like.css">
+</head>
+<body>
+
+    <h1>Œuvre {{ IdOeu }}</h1>
+    <p>Nombre de likes : <span id="likes">{{ likes }}</span></p>
+    <button id="likeButton">❤️ Like</button>
+
+    <script>
+        document.getElementById("likeButton").addEventListener("click", function() {
+            fetch("/like/{{ IdOeu }}", {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("likes").textContent = data.likes;
+            })
+            .catch(error => console.error("Erreur:", error));
+        });
+    </script>
+    <script src="scriplike.js"></script>
+
+</body>
+</html>
