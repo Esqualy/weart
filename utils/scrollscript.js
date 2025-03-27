@@ -1,3 +1,4 @@
+// Cléménce Chateau
 document.addEventListener("DOMContentLoaded", function () {
     let gallery = document.getElementById("gallery");
 
