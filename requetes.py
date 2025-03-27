@@ -77,7 +77,6 @@ def like_oeuvres(oeuvres):
     return list(amateurs)
 
 
-
 def oeuvres_likées_amateur(IdAm):
     """
     Renvoie les ID des œuvres likées par des amateurs partageant des goûts similaires.
