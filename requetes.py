@@ -66,14 +66,17 @@ def oeuvres_auteurs(artists):
     for x in artists:
         res.extend(oeuvres_auteur(x))
     return res
-
-def like_oeuvre(IdOeu):
+    
+def like_oeuvres(oeuvres):
     """
-    Renvoie la liste des amateurs ayant liké une œuvre donnée.
+    Renvoie la liste des amateurs ayant liké une des oeuvres de la liste prise en entrée.
     """
     with open("amateur_oeuvre.json", "r") as f:
         data = json.load(f)
-    return [d["IdAm"] for d in data if d["IdOeu"] == IdOeu]
+    amateurs = {d["IdAm"] for d in data if d["IdOeu"] in oeuvres}
+    return list(amateurs)
+
+
 
 def oeuvres_likées_amateur(IdAm):
     """
