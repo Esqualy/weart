@@ -1,7 +1,7 @@
 from flask import Flask, request, redirect, url_for, render_template, session, flash, render_template_string
 from requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs
 from algo import selection_1, selection_2, user_oeuvres_artists
-from datetime import datetime
+from datetime import datetime, date
 
 import bcrypt
 import json
@@ -20,21 +20,69 @@ SFTP_PORT = 22
 SFTP_USER = 'root'
 SFTP_PASS = 'F0AO4Vgqg@g25#'
 
+# Configuration du serveur SFTP
+SFTP_HOST_STOCK = '93.127.158.145'
+SFTP_PORT_STOCK = 22
+SFTP_USER_STOCK = 'root'
+SFTP_PASS_STOCK = 'HT3j02YGbL'
+
+UPLOAD_FOLDER = './uploads'
+OEUVRES_FILE = 'oeuvres.json'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+def generate_id():
+    return str(random.randint(10**17, 10**18 - 1))
+
+def load_oeuvres():
+    if os.path.exists(OEUVRES_FILE):
+        with open(OEUVRES_FILE, 'r', encoding='utf-8') as file:
+            return json.load(file)
+    return []
+
+def save_oeuvres(oeuvres):
+    with open(OEUVRES_FILE, 'w', encoding='utf-8') as file:
+        json.dump(oeuvres, file, indent=4, ensure_ascii=False)
+
+def stock_upload_file_sftp(local_file_path, remote_file_path):
+    try:
+        transport = paramiko.Transport((SFTP_HOST_STOCK, SFTP_PORT_STOCK))
+        transport.connect(username=SFTP_USER_STOCK, password=SFTP_PASS_STOCK)
+        sftp = paramiko.SFTPClient.from_transport(transport)
+
+        directories = remote_file_path.rsplit('/', 1)[0]
+        try:
+            sftp.chdir("/")  # Aller à la racine
+            for directory in directories.split("/"):
+                if directory:
+                    try:
+                        sftp.chdir(directory)  # Essayer d'aller dans le dossier
+                    except IOError:
+                        sftp.mkdir(directory)  # Si inexistant, le créer
+                        sftp.chdir(directory)
+        except Exception as e:
+            print(f"Error creating directories: {e}")
+
+        # Upload du fichier
+        sftp.put(local_file_path, remote_file_path)
+        sftp.close()
+        transport.close()
+        print(f"File successfully uploaded to {remote_file_path}")
+    except Exception as e:
+        print(f"Error uploading file: {e}")
+
+
 def upload_file_sftp(local_file_path, remote_file_path):
     try:
-        # Se connecter au serveur SFTP
         transport = paramiko.Transport((SFTP_HOST, SFTP_PORT))
         transport.connect(username=SFTP_USER, password=SFTP_PASS)
         sftp = paramiko.SFTPClient.from_transport(transport)
 
-        # Télécharger le fichier
         sftp.put(local_file_path, remote_file_path)
         sftp.close()
         transport.close()
     except Exception as e:
         print(f"Erreur SFTP : {e}")
 
-# Vérification du mot de passe avec bcrypt
 def verify_password(input_password, stored_hash):
     return bcrypt.checkpw(input_password.encode(), stored_hash)
 
@@ -109,6 +157,82 @@ def maintenance_required(f):
 def get_image_url_for_oeuvre(oeuvre_id):
     return f"http://127.0.0.1:5000/static/{oeuvre_id}.jpg"
 
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    user_id = session.get('user_id')  
+    
+    if not user_id:
+        return "Vous devez être connecté pour télécharger un fichier.", 403  
+
+    with open('artiste.json', 'r') as f:
+        artists = json.load(f)
+
+    user = next((u for u in artists if u['Id'] == user_id), None)
+    
+    if not user:
+        return "Accès non autorisé", 403  
+
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return 'Pas de fichier', 400
+        file = request.files['file']
+        if file.filename == '':
+            return 'Pas de fichier sélectionné', 400
+
+        temp_dir = "./uploads"
+        os.makedirs(temp_dir, exist_ok=True)
+        local_file_path = os.path.join(temp_dir, file.filename)
+        file.save(local_file_path)
+
+        today = date.today() 
+        remote_dir = f"/root/{today.year}/{today.strftime('%m')}/{today.strftime('%d')}"
+        remote_file_path = f"{remote_dir}/{file.filename}"
+
+        stock_upload_file_sftp(local_file_path, remote_file_path)
+
+        # Supprimer le fichier local après l'upload
+        os.remove(local_file_path)
+
+        titre = request.form.get('titre', '')
+        description = request.form.get('description', '')
+
+        id_oeuvre = generate_id()
+
+        # Charger oeuvres.json
+        with open('oeuvres.json', 'r') as oeuvres_file:
+            oeuvres = json.load(oeuvres_file)
+
+        # Ajouter la nouvelle œuvre
+        new_oeuvre = {
+            "IdOeu": id_oeuvre,
+            "path": f"/root/{today.year}/{today.strftime('%m')}/{today.strftime('%d')}/{file.filename}",
+            "IdAr": user_id, 
+            "titre": titre,
+            "description": description
+        }
+        oeuvres.append(new_oeuvre)
+
+        # Sauvegarder les oeuvres mises à jour
+        with open('oeuvres.json', 'w') as oeuvres_file:
+            json.dump(oeuvres, oeuvres_file, indent=4)
+
+        return f'Le fichier {file.filename} a bien été uploadé vers {remote_file_path}.'
+    
+    return '''
+        <html>
+            <body>
+                <h1>Upload un fichier</h1>
+                <form action="/upload" method="POST" enctype="multipart/form-data">
+                    <label for="titre">Titre de l'œuvre:</label>
+                    <input type="text" name="titre" required><br><br>
+                    <label for="description">Description de l'œuvre:</label>
+                    <input type="text" name="description"><br><br>
+                    <input type="file" name="file" required>
+                    <input type="submit" value="Upload">
+                </form>
+            </body>
+        </html>
+    '''
 
 @app.route('/')
 def index():
