@@ -1,3 +1,4 @@
+// Clémance Chateau -- Noé Callejon
 document.addEventListener("DOMContentLoaded", function () {
     // Sélectionne le bouton et le compteur de likes
     let likeBtn = document.getElementById("likeButton");
