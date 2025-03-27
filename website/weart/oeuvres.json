@@ -1,171 +1,30 @@
 [
     {
-        "IdOeu": "1",
-        "path": "/static/1.jpg",
+        "IdOeu": "590813695229505585",
+        "path": "/root/2025/03/27/sculpture.jpg",
         "IdAr": "773659515799887204",
-        "titre": "La Seine de jour",
-        "description": ""
+        "titre": "Sculpture",
+        "description": "No\u00e9 adore \u00e7a !"
     },
     {
-        "IdOeu": "2",
-        "path": "/static/2.jpg",
+        "IdOeu": "412830376248659714",
+        "path": "/root/2025/03/27/art_numerique.jpg",
         "IdAr": "773659515799887204",
-        "titre": "La Seine au lever du soleil",
-        "description": ""
+        "titre": "Art num\u00e9rique",
+        "description": "Exemple d'une oeuvre num\u00e9rique"
     },
     {
-        "IdOeu": "3",
-        "path": "/static/3.jpg",
+        "IdOeu": "283823167855923282",
+        "path": "/root/2025/03/27/street_art.jpg",
         "IdAr": "773659515799887204",
-        "titre": "La Seine en automn",
-        "description": ""
+        "titre": "Street Art",
+        "description": "Exemple d'une oeuvre street art"
     },
     {
-        "IdOeu": "4",
-        "path": "/static/4.jpg",
+        "IdOeu": "706383324162951347",
+        "path": "/root/2025/03/27/a3a9d2f8a014d96631bd82e1196fc2e3.jpg",
         "IdAr": "773659515799887204",
-        "titre": "Jardin d'iris",
-        "description": ""
-    },
-    {
-        "IdOeu": "5",
-        "path": "/static/5.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "La Joconde",
-        "description": "Portrait de Mona Lisa"
-    },
-    {
-        "IdOeu": "6",
-        "path": "/static/6.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "La naissance du Christ",
-        "description": ""
-    },
-    {
-        "IdOeu": "7",
-        "path": "/static/7.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "La Cène",
-        "description": ""
-    },
-    {
-        "IdOeu": "8",
-        "path": "/static/8.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "La dame à l'hermine",
-        "description": ""
-    },
-    {
-        "IdOeu": "9",
-        "path": "/static/9.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "La reine Isabeau",
-        "description": ""
-    },
-    {
-        "IdOeu": "10",
-        "path": "/static/10.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "Paysage méditerranéen",
-        "description": ""
-    },
-    {
-        "IdOeu": "11",
-        "path": "/static/11.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "Cruche, bol et citron",
-        "description": ""
-    },
-    {
-        "IdOeu": "12",
-        "path": "/static/12.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "Portrait de Dora Maar",
-        "description": ""
-    },
-    {
-        "IdOeu": "13",
-        "path": "/static/13.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "Figures and Dog in Front of the Sun",
-        "description": "Œuvre de Joan Miró"
-    },
-    {
-        "IdOeu": "14",
-        "path": "/static/14.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "La Grande Vague de Kanagawa",
-        "description": "Estampe de Katsushika Hokusai"
-    },
-    {
-        "IdOeu": "15",
-        "path": "/static/15.jpg",
-        "IdAr": "6",
-        "titre": "La Ville Paradis",
-        "description": "Peinture de Âme Sauvage"
-    },
-    {
-        "IdOeu": "16",
-        "path": "/static/16.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "Les Tournesols",
-        "description": "Œuvre de Vincent van Gogh"
-    },
-    {
-        "IdOeu": "17",
-        "path": "/static/17.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "Autoportrait avec collier d'épines et colibri",
-        "description": "Tableau de Frida Kahlo"
-    },
-    {
-        "IdOeu": "18",
-        "path": "/static/18.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "Le Fils de l'homme",
-        "description": "Peinture de René Magritte"
-    },
-    {
-        "IdOeu": "19",
-        "path": "/static/19.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "Turquoise Marilyn",
-        "description": "Œuvre d'Andy Warhol"
-    },
-    {
-        "IdOeu": "20",
-        "path": "/static/20.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "Le Désespéré",
-        "description": "Peinture de Gustave Courbet"
-    },
-    {
-        "IdOeu": "21",
-        "path": "/static/21.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "La Jeune Fille à la Perle",
-        "description": "Peinture de Johannes Vermeer"
-    },
-    {
-        "IdOeu": "22",
-        "path": "/static/22.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "La Naissance de Vénus",
-        "description": "Peinture de Sandro Botticelli"
-    },
-    {
-        "IdOeu": "23",
-        "path": "/static/23.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "Le Cri",
-        "description": "Peinture d'Edvard Munch"
-    },
-    {
-        "IdOeu": "24",
-        "path": "/static/24.jpg",
-        "IdAr": "773659515799887204",
-        "titre": "La Persistance de la mémoire",
-        "description": "Peinture de Salvador Dalí"
+        "titre": "PopArt",
+        "description": "Un pop art random :)"
     }
-  ]
-  
+]

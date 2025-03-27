@@ -1,7 +1,7 @@
-from requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs #le fichier requetes a été créé par @Noé Callejon, elle a pour but de créer des fonctions qui permettent d'interagir avec les json.
+## Benjamin Reznik
+from requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs, like_oeuvres #le fichier requetes a été créé par @Noé Callejon, elle a pour but de créer des fonctions qui permettent d'interagir avec les json.
 
 ##############VARS
-idAmateurMain = input("ID MAIN") # ??????????????????
 idOeuvresLikees = []
 idArtistsLikes = [] #Attention, par le biais des oeuvres ci-dessus
 idOeuvresArtists = [] #Attention, toutes les oeuvres des ArtistsLikes, y compris les OeuvresLikees
@@ -41,21 +41,24 @@ def selection_2(idOeuvresLikeesParAmateursOeuvresLikees, idOeuvresLikees):
     return act
 
 ############## CODE
+def suggestion(idAmateurMain):
+    idOeuvresLikees = like_amateur(idAmateurMain)
+    idOeuvresLikees.sort()
 
-idOeuvresAProposer1 = selection_1(idOeuvresArtists, idOeuvresLikees)
-idOeuvresLikees = like_amateur(idAmateurMain)
-idOeuvresLikees.sort()
-idArtistsLikes = user_oeuvres_artists(idOeuvresLikees)
-idOeuvresLikees.sort()
-idOeuvresArtists = oeuvres_auteurs(idOeuvresLikees)
-idOeuvresArtists.sort()
-idAmateurOeuvresLikees.sort()
-idOeuvresLikeesParAmateursOeuvresLikees = like_amateurs(idAmateurOeuvresLikees)
-idOeuvresLikeesParAmateursOeuvresLikees.sort()
+    idArtistsLikes = user_oeuvres_artists(idOeuvresLikees)
 
-idOeuvresAProposer1 = selection_1(idOeuvresArtists, idOeuvresLikees)
-idOeuvresAProposer2 = selection_2(idOeuvresLikeesParAmateursOeuvresLikees, idOeuvresLikees)
+    idOeuvresArtists = oeuvres_auteurs(idOeuvresLikees)
+    idOeuvresArtists.sort()
 
-idOeuvresAProposerFinal = list(set(idOeuvresAProposer1) | set(idOeuvresAProposer2))
-print(idOeuvresAProposer1)
-print(idOeuvresAProposer2)
+    idAmateurOeuvresLikees = like_oeuvres(idOeuvresLikees)
+    idAmateurOeuvresLikees.sort()
+
+    idOeuvresLikeesParAmateursOeuvresLikees = like_amateurs(idAmateurOeuvresLikees)
+    idOeuvresLikeesParAmateursOeuvresLikees.sort()
+
+    idOeuvresAProposer1 = selection_1(idOeuvresArtists, idOeuvresLikees)
+    idOeuvresAProposer2 = selection_2(idOeuvresLikeesParAmateursOeuvresLikees, idOeuvresLikees)
+
+    idOeuvresAProposerFinal = list(set(idOeuvresAProposer1) | set(idOeuvresAProposer2))
+
+    return idOeuvresAProposerFinal

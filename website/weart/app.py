@@ -1,7 +1,7 @@
-from flask import Flask, request, redirect, url_for, render_template, session, flash, render_template_string
-from requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs
-from algo import selection_1, selection_2, user_oeuvres_artists
+# Création par Thibault BENOIT-GUIRY 
+from flask import Flask, request, redirect, url_for, render_template, session, flash, abort
 from datetime import datetime, date 
+from algo import suggestion
 
 import bcrypt
 import json
@@ -10,25 +10,27 @@ import random
 import paramiko
 
 app = Flask(__name__)
-app.secret_key = 'F0AO4Vgqg@g25#'  
+app.secret_key = 'F0AO4Vgqg@g25#' # Signature du cookie pour notre infrastructure
 
 MAINTENANCE_MODE = False  
 
-# Configuration pour SFTP VPS KVM
+# DEFINITION DU VPS PRINCIPAL 
 SFTP_HOST = '83.150.217.109'
 SFTP_PORT = 22
 SFTP_USER = 'root'
 SFTP_PASS = 'F0AO4Vgqg@g25#'
 
-# Configuration pour SFTP VPS STOCKAGE
+# DEFINITION DU VPS STOCKAGE
 SFTP_HOST_STOCK = '93.127.158.145'
 SFTP_PORT_STOCK = 22
 SFTP_USER_STOCK = 'root'
 SFTP_PASS_STOCK = 'HT3j02YGbL'
 
+# FONCTION DE GENERATION D'ID (Pour Oeuvre, User etc...)
 def generate_id():
     return str(random.randint(10**17, 10**18 - 1))
 
+# SYSTEME D'UPLOAD POUR LE VPS PRINCIPAL
 def upload_file_sftp(local_file_path, remote_file_path):
     try:
         transport = paramiko.Transport((SFTP_HOST, SFTP_PORT))
@@ -41,6 +43,7 @@ def upload_file_sftp(local_file_path, remote_file_path):
     except Exception as e:
         print(f"Erreur SFTP : {e}")
 
+# SYSTEME D'UPLOAD POUR LE VPS STOCKAGE
 def stock_upload_file_sftp(local_file_path, remote_file_path):
     try:
         transport = paramiko.Transport((SFTP_HOST_STOCK, SFTP_PORT_STOCK))
@@ -49,43 +52,49 @@ def stock_upload_file_sftp(local_file_path, remote_file_path):
 
         directories = remote_file_path.rsplit('/', 1)[0]
         try:
-            sftp.chdir("/")  # Aller à la racine
+            sftp.chdir("/")  
             for directory in directories.split("/"):
                 if directory:
                     try:
-                        sftp.chdir(directory)  # Essayer d'aller dans le dossier
+                        sftp.chdir(directory)  
                     except IOError:
-                        sftp.mkdir(directory)  # Si inexistant, le créer
+                        sftp.mkdir(directory)  
                         sftp.chdir(directory)
         except Exception as e:
-            print(f"Error creating directories: {e}")
+            print(f"Erreur lors de la creation du dossier: {e}")
 
         # Upload du fichier
         sftp.put(local_file_path, remote_file_path)
         sftp.close()
         transport.close()
-        print(f"File successfully uploaded to {remote_file_path}")
+        print(f"Fichier bien envoyé vers : {remote_file_path}")
     except Exception as e:
-        print(f"Error uploading file: {e}")
+        print(f"Erreur lors de l'envoi du fichier : {e}")
 
 # Vérification du mot de passe avec bcrypt
 def verify_password(input_password, stored_hash):
     return bcrypt.checkpw(input_password.encode(), stored_hash)
 
+# Deuxième fonction de génération d'ID mais avec verification dans les json en cas d'une éventuelle duplication d'Id
 def generate_unique_id(file_name, user_type):
     existing_ids = set()
     if os.path.exists(file_name):
         with open(file_name, 'r') as f:
             users = json.load(f)
             for user in users:
-                existing_ids.add(user.get(f"Id{user_type}", ""))  # Vérifie IdAm ou IdAr
+                existing_ids.add(user.get(f"Id{user_type}", ""))
     
     while True:
         new_id = str(random.randint(10**17, 10**18 - 1))
         if new_id not in existing_ids:
             return new_id
 
-def save_user_to_json(user_type, pseudo, password, mail, ddn, nom, prenom, genre):
+""" 
+Fonction pour sauvegarder les données lors de l'inscription en fonction du compte 
+  Artiste => artiste.json
+  Amateur => amateur.json
+"""
+def save_user_to_json(user_type, pseudo, password, mail, ddn, nom, prenom, genre): 
     file_name = f"{user_type}.json"
     user_id_key = "IdAr" if user_type == "artiste" else "IdAm"
     user_id = generate_unique_id(file_name, user_type)
@@ -113,6 +122,11 @@ def save_user_to_json(user_type, pseudo, password, mail, ddn, nom, prenom, genre
     with open(file_name, 'w') as f:
         json.dump(users, f, indent=2)
 
+
+""" Permet de chercher un utilisateur par son user_id dans deux fichiers JSON différents
+  => Si c'est dans artiste.json : son identifiant sera sous la clé 'IdAr'
+  => Si c'est dans amateur.json : son identifiant sera sous la clé 'IdAm'
+"""
 def get_user_from_json(user_id):
     with open('artiste.json', 'r') as f:
         artists = json.load(f)
@@ -124,20 +138,11 @@ def get_user_from_json(user_id):
     
     return user
 
-def get_user_from_json(user_id):
-    with open('artiste.json', 'r') as f:
-        artists = json.load(f)
-    with open('amateur.json', 'r') as f:
-        amateurs = json.load(f)
-    
-    user = next((u for u in artists if u.get("IdAr") == user_id), None) or \
-           next((u for u in amateurs if u.get("IdAm") == user_id), None)
-    
-    return user
-
+# Fonction qui permet de vérifier si le mot de passe transmis par l'utilisateur correspond au mot de passe crypter qu'on a dans les JSON respectives. 
 def verify_password(input_password, stored_hash):
     return bcrypt.checkpw(input_password.encode(), stored_hash.encode())
 
+# Fonction qui oblige la connexion à toute utilisateurs. 
 def login_required(f):
     def wrapper(*args, **kwargs):
         if 'username' not in session:
@@ -146,6 +151,7 @@ def login_required(f):
     wrapper.__name__ = f.__name__
     return wrapper
 
+# Fonction qui oblige en cas de mode maintenance activer (cf => variable l.15)
 def maintenance_required(f):
     def wrapper(*args, **kwargs):
         if MAINTENANCE_MODE:
@@ -154,37 +160,26 @@ def maintenance_required(f):
     wrapper.__name__ = f.__name__
     return wrapper
 
-def get_image_url_for_oeuvre(oeuvre_id):
-    return f"http://127.0.0.1:5000/static/{oeuvre_id}.jpg"
-
-
+# Fonction
 @app.route('/')
+@login_required
+@maintenance_required
 def index():
     if 'username' not in session:
         return redirect(url_for('signin'))
     
     user_id = session.get('user_id')
+    idAmateurMain = user_id 
 
-    idAmateurMain = user_id
-    idOeuvresLikees = like_amateur(idAmateurMain)
-    idArtistsLikes = user_oeuvres_artists(idOeuvresLikees)
-    idOeuvresArtists = oeuvres_auteurs(idArtistsLikes)
-    idOeuvresAProposer1 = selection_1(idOeuvresArtists, idOeuvresLikees)
-    idOeuvresLikeesParAmateursOeuvresLikees = like_amateurs(idOeuvresLikees)
-    idOeuvresAProposer2 = selection_2(idOeuvresLikeesParAmateursOeuvresLikees, idOeuvresLikees)
-
-    idOeuvresAProposerFinal = list(set(idOeuvresAProposer1) | set(idOeuvresAProposer2))
-
-    oeuvres_avec_images = []
-    for oeuvre_id in idOeuvresAProposerFinal:
-        image_url = get_image_url_for_oeuvre(oeuvre_id) 
-        oeuvres_avec_images.append({"id": oeuvre_id, "image_url": image_url})
+    suggestions = suggestion(idAmateurMain)
+    print(idAmateurMain)
+    print(suggestion(idAmateurMain))
 
     return render_template("index.html", 
-                        username=session['username'], 
-                        user_role=session.get('user_role'), 
-                        user_id=user_id, 
-                        recommandations=oeuvres_avec_images)
+                           username=session['username'], 
+                           user_role=session.get('user_role'), 
+                           user_id=user_id,
+                           suggestions=suggestions)  
 
 @app.route("/signin", methods=["GET", "POST"])
 @maintenance_required
@@ -243,7 +238,7 @@ def signup():
         age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
 
         if age < 15:
-            flash("L'âge légal en France pour s'inscrire est de 15 ans.", "error")
+            flash("L'âge légal pour s'inscrire en France est de 15 ans.", "error")
             return render_template("signup.html")
 
         with open('artiste.json', 'r') as f:
@@ -268,12 +263,10 @@ def signup():
     return render_template("signup.html")
 
 @app.route("/settings", methods=["GET", "POST"])
+@maintenance_required
+@login_required
 def settings():
     user_id = session.get('user_id')  
-
-    if not user_id:
-        flash("Vous devez être connecté pour modifier votre profil.", "error")
-        return redirect(url_for('login'))  
 
     with open('artiste.json', 'r') as f:
         artists = json.load(f)
@@ -319,16 +312,15 @@ def settings():
 
         flash("Profil mis à jour avec succès.", "success")
 
-        return redirect(url_for('upload'))
+        return redirect(url_for('index'))
 
     return render_template("settings.html", user=user, user_role=session.get('user_role'))
 
 @app.route('/upload', methods=['GET', 'POST'])
+@login_required
+@maintenance_required
 def upload_file():
     user_id = session.get('user_id')  
-    
-    if not user_id:
-        return "Vous devez être connecté pour télécharger un fichier.", 403  
 
     with open('artiste.json', 'r') as f:
         artists = json.load(f)
@@ -336,14 +328,12 @@ def upload_file():
     user = next((u for u in artists if u.get('IdAm') == user_id or u.get('IdAr') == user_id), None)
     
     if not user:
-        return "Accès non autorisé", 403  
+        abort(403)  
 
     if request.method == 'POST':
-        if 'file' not in request.files:
-            return 'Pas de fichier', 400
         file = request.files['file']
         if file.filename == '':
-            return 'Pas de fichier sélectionné', 400
+            abort(400)
 
         temp_dir = "./uploads"
         os.makedirs(temp_dir, exist_ok=True)
@@ -366,38 +356,39 @@ def upload_file():
         with open('oeuvres.json', 'r') as oeuvres_file:
             oeuvres = json.load(oeuvres_file)
 
-        # Ajouter la nouvelle œuvre
         new_oeuvre = {
             "IdOeu": id_oeuvre,
             "path": remote_file_path,
             "IdAr": user_id if 'IdAr' in user else None, 
-            "IdAm": user_id if 'IdAm' in user else None,
             "titre": titre,
             "description": description
         }
         oeuvres.append(new_oeuvre)
 
-        # Sauvegarder les oeuvres mises à jour
         with open('oeuvres.json', 'w') as oeuvres_file:
             json.dump(oeuvres, oeuvres_file, indent=4)
 
-        return f'Le fichier {file.filename} a bien été uploadé vers {remote_file_path}.'
+        return redirect(url_for('upload_success', filename=file.filename, path=remote_file_path))
+
+    return render_template('upload.html')
+
+@app.route('/upload_success')
+@maintenance_required
+@login_required
+def upload_success():
+    user_id = session.get('user_id')  
+
+    with open('artiste.json', 'r') as f:
+        artists = json.load(f)
+
+    user = next((u for u in artists if u.get('IdAm') == user_id or u.get('IdAr') == user_id), None)
     
-    return '''
-        <html>
-            <body>
-                <h1>Upload un fichier</h1>
-                <form action="/upload" method="POST" enctype="multipart/form-data">
-                    <label for="titre">Titre de l'œuvre:</label>
-                    <input type="text" name="titre" required><br><br>
-                    <label for="description">Description de l'œuvre:</label>
-                    <input type="text" name="description"><br><br>
-                    <input type="file" name="file" required>
-                    <input type="submit" value="Upload">
-                </form>
-            </body>
-        </html>
-    '''
+    if not user:
+        abort(403)  
+
+    filename = request.args.get('filename')
+    path = request.args.get('path')
+    return render_template('upload_success.html', filename=filename, path=path)
 
 @app.route("/account/<user_id>")
 @login_required  
@@ -413,13 +404,12 @@ def account(user_id):
         flash("Profil introuvable.", "error")
         return redirect(url_for('index'))
 
-    # Récupérer les badges de l'utilisateur
     user_badges = [badges[badge_id] for badge_id in user.get('badges', [])] 
 
     if 'username' not in session:
         return redirect(url_for('signin'))
 
-    return render_template("account.html", username=session['username'], user_role=session.get('user_role'), user=user, badges=user_badges, user_id=user_id)
+    return render_template("account.html", username=session['username'], user_role=session.get('user_role'), user=user, badges=user_badges, user_id=user_id, )
 
 
 @app.route("/logout")
@@ -428,12 +418,6 @@ def logout():
     session.pop('username', None)
     session.pop('user_id', None)
     return redirect(url_for('signin'))
-
-@app.route("/search")
-@login_required  
-@maintenance_required
-def search():
-    return render_template("search.html", username=session['username'], user_role=session.get('user_role'))
 
 @app.route("/maintenance")
 def maintenance():
