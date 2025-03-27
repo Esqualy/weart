@@ -10,6 +10,7 @@
     <meta property="og:title" content="Bienvenue sur We-Art">
     <meta property="og:description" content="We-Art est une plateforme créative où les artistes et les amateurs se rencontrent. Découvrez, partagez et collaborez sur des projets uniques.">
     <meta property="og:image" content="https://cdn.we-art.art/static/weartlogo.jpg">
+    <link rel="icon" type="image/x-icon" href="https://cdn.we-art.art/static/ressources/all/favicon.png">
 </head>
 <body>
     <div class="sidebar">
@@ -43,6 +44,8 @@
                     <li>{{ rec }}</li>
                 {% endfor %}
             </ul>
+        {% elif user_role == 'artiste' %}
+            <p>Aucune recommandation car vous êtes connecté entant qu'<strong>Artiste</strong></p>
         {% else %}
             <p>Aucune recommandation pour le moment.</p>
         {% endif %}        
