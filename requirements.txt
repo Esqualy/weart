@@ -1,10 +1,7 @@
-## Thibault Benoit
-flask (pip install flask)
-paramiko (pip install paramiko)
-bcrypt (pip install bcrypt)
-torch (pip install torch)
-pillow (pip install pillow)
-numpy (pip install numpy)
-==
-
-clip (pip install git+https://github.com/openai/CLIP.git) <-- nécessite Git (https://git-scm.com/)
+flask==2.0.1
+paramiko==2.7.2
+bcrypt==3.2.0
+torch==1.10.0
+pillow==8.4.0
+numpy==1.21.2
+git+https://github.com/openai/CLIP.git
