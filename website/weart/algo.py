@@ -1,5 +1,5 @@
 ## Benjamin Reznik
-from requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs, like_oeuvres #le fichier requetes a été créé par @Noé Callejon, elle a pour but de créer des fonctions qui permettent d'interagir avec les json.
+from .requetes import like_amateur, like_amateurs, auteur, oeuvres_auteurs, like_oeuvres #le fichier requetes a été créé par @Noé Callejon, elle a pour but de créer des fonctions qui permettent d'interagir avec les json.
 
 ##############VARS
 idOeuvresLikees = []

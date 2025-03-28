@@ -1,7 +1,7 @@
 # Création par Thibault BENOIT-GUIRY 
 from flask import Flask, request, redirect, url_for, render_template, session, flash, abort
 from datetime import datetime, date 
-from algo import suggestion
+from .algo import suggestion
 
 import bcrypt
 import json
@@ -13,7 +13,13 @@ app = Flask(__name__)
 app.secret_key = 'F0AO4Vgqg@g25#' # Signature du cookie pour notre infrastructure
 
 MAINTENANCE_MODE = False  
+"""
+=================================================================
+#                          CHECKPOINT                           #
+=================================================================
+* Déclaration des fonctions essentielles pour la suite des routes
 
+"""
 # DEFINITION DU VPS PRINCIPAL 
 SFTP_HOST = '83.150.217.109'
 SFTP_PORT = 22
@@ -25,6 +31,10 @@ SFTP_HOST_STOCK = '93.127.158.145'
 SFTP_PORT_STOCK = 22
 SFTP_USER_STOCK = 'root'
 SFTP_PASS_STOCK = 'HT3j02YGbL'
+
+def get_json_file_path(filename):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base_dir, filename)
 
 # FONCTION DE GENERATION D'ID (Pour Oeuvre, User etc...)
 def generate_id():
@@ -128,9 +138,12 @@ def save_user_to_json(user_type, pseudo, password, mail, ddn, nom, prenom, genre
   => Si c'est dans amateur.json : son identifiant sera sous la clé 'IdAm'
 """
 def get_user_from_json(user_id):
-    with open('artiste.json', 'r') as f:
+    file_path_artiste = get_json_file_path("artiste.json")
+    file_path_amateurs = get_json_file_path("amateur.json")
+
+    with open(file_path_artiste) as f:
         artists = json.load(f)
-    with open('amateur.json', 'r') as f:
+    with open(file_path_amateurs) as f:
         amateurs = json.load(f)
     
     user = next((u for u in artists if u.get("IdAr") == user_id), None) or \
@@ -160,7 +173,15 @@ def maintenance_required(f):
     wrapper.__name__ = f.__name__
     return wrapper
 
-# Fonction
+"""
+=================================================================
+#                          CHECKPOINT                           #
+=================================================================
+* Déclaration des routes les plus complexes
+
+"""
+
+# Fonction de la route principale de l'application '/', avec protection du mode maintenance + obligation d'être connecté sinon redirigé sur les pages de connexion.
 @app.route('/')
 @login_required
 @maintenance_required
@@ -169,57 +190,81 @@ def index():
         return redirect(url_for('signin'))
     
     user_id = session.get('user_id')
-    idAmateurMain = user_id 
 
-    suggestions = suggestion(idAmateurMain)
-    print(idAmateurMain)
-    print(suggestion(idAmateurMain))
+    idAmateurMain = int(user_id) 
+    
+    print(f" user_id récupéré : {user_id} (Type : {type(user_id)})")
+    
+    try:
+        suggestions = suggestion(idAmateurMain)
+        print(f" Suggestions générées : {suggestions}")
+    except Exception as e:
+        print(f"ERREUR lors de l'appel à suggestion(): {e}")
+        suggestions = [] 
 
     return render_template("index.html", 
                            username=session['username'], 
                            user_role=session.get('user_role'), 
                            user_id=user_id,
-                           suggestions=suggestions)  
+                           suggestions=suggestions)
 
+# Fonction de la route principale de l'application '/', avec protection du mode maintenance + obligation d'être connecté sinon redirigé sur les pages de connexion.
 @app.route("/signin", methods=["GET", "POST"])
 @maintenance_required
 def signin():
+    username = None 
+    password = None
+
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
 
-        with open('artiste.json', 'r') as f:
-            artists = json.load(f)
-        with open('amateur.json', 'r') as f:
-            amateurs = json.load(f)
+    file_path_artiste = get_json_file_path("artiste.json")
+    file_path_amateurs = get_json_file_path("amateur.json")
 
-        user = None
-        user_role = None
+    with open(file_path_artiste) as f:
+        artists = json.load(f)
+    with open(file_path_amateurs) as f:
+        amateurs = json.load(f)
 
-        for u in artists:
+    user = None
+    user_role = None
+
+    for u in artists:
+        if u["pseudo"] == username and verify_password(password, u["password"]):
+            user = u
+            user_role = "artiste"
+            break
+
+    if not user:
+        for u in amateurs:
             if u["pseudo"] == username and verify_password(password, u["password"]):
                 user = u
-                user_role = "artiste"
+                user_role = "amateur"
                 break
 
-        if not user:
-            for u in amateurs:
-                if u["pseudo"] == username and verify_password(password, u["password"]):
-                    user = u
-                    user_role = "amateur"
-                    break
-
-        if user:
-            session['username'] = username
-            session['user_role'] = user_role
-            session['user_id'] = user["IdAr"] if user_role == "artiste" else user["IdAm"]
-            return redirect(url_for('index'))
-        else:
-            flash("Nom d'utilisateur ou mot de passe incorrect.")
+    if user:
+        session['username'] = username
+        session['user_role'] = user_role
+        session['user_id'] = user["IdAr"] if user_role == "artiste" else user["IdAm"]
+        return redirect(url_for('index'))
+    else:
+        flash("Nom d'utilisateur ou mot de passe incorrect.")
 
     return render_template("signin.html")
 
 
+""""
+Fonction de la route d'insciption, on récupère les données écrite. Le mode maintenance rend la page inacessible 
+On fait une vérification en 3 étapes : 
+
+ => L'utilisateur a t-il plus de 15 ans ? (cf => vie-publique.fr - Site du gouvernement - https://urlr.me/bdWnzg.)"
+ => Le pseudonyme est-il déjà utiliser ? Pour éviter toute confussion et de faux compte.
+ => L'adresse email est-il déjà utiliser ? Pour éviter les doubles comptes, du moins un peu lutter...
+
+ Si tout est valide : on le sauvegarde dans le JSON respective, et on le retourne dans la page de connexion (signin)
+ Si y a un soucis : on lui renvoie sur la page d'inscription avec le message d'erreur que flask nous envoie.
+"""
 @app.route("/signup", methods=["GET", "POST"])
 @maintenance_required
 def signup():
@@ -241,9 +286,12 @@ def signup():
             flash("L'âge légal pour s'inscrire en France est de 15 ans.", "error")
             return render_template("signup.html")
 
-        with open('artiste.json', 'r') as f:
+        file_path_artiste = get_json_file_path("artiste.json")
+        file_path_amateurs = get_json_file_path("amateur.json")
+
+        with open(file_path_artiste) as f:
             artists = json.load(f)
-        with open('amateur.json', 'r') as f:
+        with open(file_path_amateurs) as f:
             amateurs = json.load(f)
 
         for user in artists + amateurs:
@@ -262,15 +310,25 @@ def signup():
 
     return render_template("signup.html")
 
+""""
+Fonction de la route settings, pour modifier son compte :
+=> Son pseudonyme 
+=> Sa biographie, par défault marqué "None".
+
+Le mode maintenance rend la page inacessible.
+"""
 @app.route("/settings", methods=["GET", "POST"])
 @maintenance_required
 @login_required
 def settings():
     user_id = session.get('user_id')  
 
-    with open('artiste.json', 'r') as f:
+    file_path_artiste = get_json_file_path("artiste.json")
+    file_path_amateurs = get_json_file_path("amateur.json")
+
+    with open(file_path_artiste) as f:
         artists = json.load(f)
-    with open('amateur.json', 'r') as f:
+    with open(file_path_amateurs) as f:
         amateurs = json.load(f)
 
     user = next((u for u in artists if u.get('IdAr') == user_id), None)
@@ -303,11 +361,14 @@ def settings():
 
         if 'IdAr' in user:
             artists = [u if u["IdAr"] != user["IdAr"] else user for u in artists]
-            with open('artiste.json', 'w') as f:
+            file_path_artiste = get_json_file_path("artiste.json")
+
+            with open(file_path_artiste) as f:
                 json.dump(artists, f, indent=2)
         elif 'IdAm' in user:
             amateurs = [u if u["IdAm"] != user["IdAm"] else user for u in amateurs]
-            with open('amateur.json', 'w') as f:
+            file_path_amateur = get_json_file_path("amateur.json")
+            with open(file_path_amateur) as f:
                 json.dump(amateurs, f, indent=2)
 
         flash("Profil mis à jour avec succès.", "success")
@@ -316,13 +377,26 @@ def settings():
 
     return render_template("settings.html", user=user, user_role=session.get('user_role'))
 
+""""
+Fonction de la route upload, pour publier une oeuvre sous l'identité de l'Artiste :
+=> L'accès est restreint que pour les comptes Artistes.
+
+L'image est envoyé directement sur le VPS stockage dans l'ordre suivant :
+* L'année (Ex : 2025)
+* Le mois (Ex : 07 => Juillet)
+* Le jour (Ex : 22)
+=> Soit le 22 Juillet 2025 (2025/07/22/image_upload.jpg)
+
+Le mode maintenance rend la page inacessible.
+"""
 @app.route('/upload', methods=['GET', 'POST'])
 @login_required
 @maintenance_required
 def upload_file():
     user_id = session.get('user_id')  
+    file_path_artiste = get_json_file_path("artiste.json")
 
-    with open('artiste.json', 'r') as f:
+    with open(file_path_artiste) as f:
         artists = json.load(f)
 
     user = next((u for u in artists if u.get('IdAm') == user_id or u.get('IdAr') == user_id), None)
@@ -372,13 +446,15 @@ def upload_file():
 
     return render_template('upload.html')
 
+# Route basique pour confirmer l'upload d'une oeuvre. Connexion obligatoire + Le mode maintenance rend la page inacessible.
 @app.route('/upload_success')
 @maintenance_required
 @login_required
 def upload_success():
     user_id = session.get('user_id')  
+    file_path_artiste = get_json_file_path("artiste.json")
 
-    with open('artiste.json', 'r') as f:
+    with open(file_path_artiste) as f:
         artists = json.load(f)
 
     user = next((u for u in artists if u.get('IdAm') == user_id or u.get('IdAr') == user_id), None)
@@ -390,6 +466,20 @@ def upload_success():
     path = request.args.get('path')
     return render_template('upload_success.html', filename=filename, path=path)
 
+
+"""
+Route de l'affichage du compte suivi de l'IdAr/Am :
+=> Si le compte n'existe pas (IdAr ou IdAm introuvable) : on lui envoi un erreur 404
+
+Sinon, on lui affiche son compte suivi des informations suivant :
+* Son pseudonyme
+* Sa biographie
+* Sa photo de profil (hébergé en static sur le VPS principal)
+* Les badges (Pour des idées futurs : si une personne gagne à un évenement, il peut gagner un badge pour avoir un côté esthétique trop CoOl,
+ ou afficher les membres du projet)
+
+Le mode maintenance rend la page inacessible.
+"""
 @app.route("/account/<user_id>")
 @login_required  
 @maintenance_required
@@ -401,7 +491,7 @@ def account(user_id):
     user_id = session.get('user_id')  
 
     if not user:
-        flash("Profil introuvable.", "error")
+        abort(404)
         return redirect(url_for('index'))
 
     user_badges = [badges[badge_id] for badge_id in user.get('badges', [])] 
@@ -411,7 +501,14 @@ def account(user_id):
 
     return render_template("account.html", username=session['username'], user_role=session.get('user_role'), user=user, badges=user_badges, user_id=user_id, )
 
+"""
+=================================================================
+#                          CHECKPOINT                           #
+=================================================================
+* Passage sur les routes plus simple, avec des fonctions rapide
+"""
 
+# Route simple : si l'utilisateur va dessus, notre application déconnecte le compte de la personne et le renvoi sur la page de connexion.
 @app.route("/logout")
 @maintenance_required
 def logout():
@@ -419,20 +516,23 @@ def logout():
     session.pop('user_id', None)
     return redirect(url_for('signin'))
 
+
+# Route pour la page de maintenance en cas de maintenance (cf => variable l.15)
 @app.route("/maintenance")
 def maintenance():
     return render_template("maintenance.html")
 
+# Route pour les conditions d'utilisation universel 
 @app.route("/terms_of_service")
-@maintenance_required
 def terms_of_service():
     return render_template("terms_of_service.html")
 
+# Route pour les politique de confidentialité  
 @app.route("/privacy_policy")
-@maintenance_required
 def privacy_policy(): 
     return render_template("privacy_policy.html")
 
+# Toute les erreurs prisent en charge 
 @app.errorhandler(400)
 def bad_request(error):
     return render_template('bad_request.html'), 400  
@@ -476,6 +576,7 @@ def bad_gateway(error):
 @app.errorhandler(503)
 def maintenance(error):
     return render_template('maintenance.html'), 503 
+
 
 if __name__ == "__main__":
     app.run(debug=True)
