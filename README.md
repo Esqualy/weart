@@ -4,7 +4,7 @@ We Art - We are
 ### Information 
 Une version avec IA aurai du voir le jour, mais malgré plusieurs problèmes techniques et du côut que peut représenter sur les hebergements, nous avons été contraint de pas l'implémenter pour la version trophée NSI. Cependant, elle reste toujours disponible dans le depot, pour pouvoir tester notre technique pour crée des similarités entre plusieurs images. 
 
-Vous retrouverez aussi dans ```utils/``` des morceaux de codes qui ont servi ou abandonné sur l'avancée comme ```upload.py``` qui a servi à la page d'upload du site internet.
+Vous retrouverez aussi dans ```utils/``` des morceaux de codes qui ont servi ou été abandonné sur l'avancée comme ```upload.py``` qui a servi à la page d'upload du site internet.
 
 ## Presentation du projet
 WeArt est une plateforme dédiée aux artistes et amateurs d’art. Son objectif est d’exposer, échanger et favoriser la reconnaissance des artistes à l'échelle mondiale. Accessible via un site web, elle couvre toutes les formes d’art et propose un réseau social artistique. Grâce à un algorithme intelligent, chaque utilisateur découvre des œuvres adaptées à ses goûts. WeArt met en avant l’art visuel, en particulier numérique, tout en valorisant l’inspiration et la collaboration.
