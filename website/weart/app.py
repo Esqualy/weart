@@ -1,4 +1,4 @@
-# Création par Thibault BENOIT-GUIRY 
+# Création par Thibault BENOIT-GUIRY - Contribution Like : Clémence CHATEAU - Noé CALLEJON
 from flask import Flask, request, redirect, url_for, render_template, session, flash, abort
 from datetime import datetime, date 
 from .algo import suggestion
@@ -151,6 +151,7 @@ def get_user_from_json(user_id):
     
     return user
 
+
 # Fonction qui permet de vérifier si le mot de passe transmis par l'utilisateur correspond au mot de passe crypter qu'on a dans les JSON respectives. 
 def verify_password(input_password, stored_hash):
     return bcrypt.checkpw(input_password.encode(), stored_hash.encode())
@@ -182,7 +183,7 @@ def maintenance_required(f):
 """
 
 # Fonction de la route principale de l'application '/', avec protection du mode maintenance + obligation d'être connecté sinon redirigé sur les pages de connexion.
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @login_required
 @maintenance_required
 def index():
@@ -190,23 +191,58 @@ def index():
         return redirect(url_for('signin'))
     
     user_id = session.get('user_id')
-
-    idAmateurMain = int(user_id) 
+    idAmateurMain = int(user_id)
     
     print(f" user_id récupéré : {user_id} (Type : {type(user_id)})")
     
     try:
-        suggestions = suggestion(idAmateurMain)
-        print(f" Suggestions générées : {suggestions}")
+        # Appel à la fonction suggestion pour obtenir la liste des ID d'œuvres suggérées
+        oeuvre_ids = suggestion(idAmateurMain)
+        print(f" ID des œuvres suggérées : {oeuvre_ids}")
+        
+        file_path_oeuvres = get_json_file_path("oeuvres.json")
+        with open(file_path_oeuvres) as file:
+            oeuvres = json.load(file)
+        
+        suggestions = [oeuvre for oeuvre in oeuvres if str(oeuvre['IdOeu']) in map(str, oeuvre_ids)]
+        
+        if not suggestions:
+            print("Aucune œuvre suggérée. On prend une œuvre aléatoire parmi toutes les œuvres.")
+            current_suggestion = random.choice(oeuvres)  #
+            next_index = 3  
+        else:
+            current_index = int(request.args.get('index', 0))
+
+            if current_index + 1 >= len(suggestions):
+                print("Fin de la liste des suggestions. On prend une œuvre aléatoire.")
+                current_suggestion = random.choice(oeuvres)
+                next_index = 3  
+            else:
+                current_suggestion = suggestions[current_index]
+                next_index = current_index + 1
+
+        current_suggestion['path'] = current_suggestion['path'].replace('/root/', '')
+
+        if suggestions:
+            for oeuvre in suggestions:
+                oeuvre['path'] = oeuvre['path'].replace('/root/', '')
+
+        has_next = next_index < len(suggestions) if next_index != -1 else False
+
     except Exception as e:
         print(f"ERREUR lors de l'appel à suggestion(): {e}")
-        suggestions = [] 
+        current_suggestion = None
+        has_next = False
+        next_index = -1
 
     return render_template("index.html", 
-                           username=session['username'], 
-                           user_role=session.get('user_role'), 
-                           user_id=user_id,
-                           suggestions=suggestions)
+                        username=session['username'], 
+                        user_role=session.get('user_role'), 
+                        user_id=user_id,
+                        current_suggestion=current_suggestion,
+                        has_next=has_next,
+                        next_index=next_index)
+
 
 # Fonction de la route principale de l'application '/', avec protection du mode maintenance + obligation d'être connecté sinon redirigé sur les pages de connexion.
 @app.route("/signin", methods=["GET", "POST"])
