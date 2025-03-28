@@ -44,7 +44,8 @@
  ]
  
  similar_images = {}
- 
+
+# Prendre les résultats dépassant un seuil de similarité 
  for i in range(len(image_paths)):
      res = []
      for j in range(i + 1, len(image_paths)):
