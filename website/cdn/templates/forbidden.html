@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erreur 502 - WeArt</title>
+    <title>Erreur 403 - WeArt</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='error.css') }}">
     <link rel="icon" type="image/x-icon" href="https://cdn.we-art.art/static/ressources/all/favicon.png">
 </head>
 <body>
     <div class="container">
         <img src="{{ url_for('static', filename='weartlogo.jpg') }}" alt="WeArt Logo" class="logo">
-        <h1>502</h1>
-        <p>Erreur 502 : Mauvaise passerelle. Le serveur a reçu une réponse invalide en amont.</p>
-        <p>Si le problème persiste, merci de contacter <a href="mailto:supportweb@we-art.app">supportweb@we-art.app</a>.</p>
+        <h1>403</h1>
+        <p>Erreur 403 : Accès interdit. Vous n'avez pas la permission d'accéder à cette page.</p>
         <a href="https://we-art.app/" class="btn-home">Retour à l'accueil</a>
     </div>
 </body>
