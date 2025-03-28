@@ -1,5 +1,6 @@
 # WeArt
 We Art - We are
+https://we-art.art/
 
 ### Information 
 Une version avec IA aurai du voir le jour, mais malgré plusieurs problèmes techniques et du côut que peut représenter sur les hebergements, nous avons été contraint de pas l'implémenter pour la version trophée NSI. Cependant, elle reste toujours disponible dans le depot, pour pouvoir tester notre technique pour crée des similarités entre plusieurs images. 
