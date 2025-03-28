@@ -16,7 +16,6 @@
     <div class="sidebar">
         <ul>
             <li><a href="/"><i class="bi bi-house-door-fill"></i></a></li>
-            <li><a href="/search"><i class="bi bi-search"></i></a></li>
             {% if user_role == 'artiste' %}
                 <li><a href="/upload"><i class="bi bi-cloud-upload-fill"></i></a></li>
             {% endif %}
@@ -25,32 +24,18 @@
             <li><a href="{{ url_for('logout') }}"><i class="bi bi-box-arrow-right"></i></a></li> <!-- Bouton Déconnexion -->
         </ul>
     </div>
-    <div class="content">
-        <h1>Bienvenue, {{ username }} !</h1>
-        {% if user_role == 'artiste' %}
-            <p>Vous êtes connecté en tant qu' <strong>Artiste</strong>. Partagez vos œuvres et collaborez avec la communauté !</p>
-        {% elif user_role == 'amateur' %}
-            <p>Vous êtes connecté en tant qu' <strong>Amateur</strong>. Découvrez et soutenez les artistes talentueux !</p>
-        {% else %}
-            <p>Bienvenue sur We-Art !</p>
-        {% endif %}
-        
-        <!-- Section des recommandations -->
-        <h2>Recommandations pour vous</h2>
-        <div class="recommendations">
-            {% if recommandations %}
-            <ul>
-                {% for rec in recommandations %}
-                    <li>{{ rec }}</li>
-                {% endfor %}
-            </ul>
-        {% elif user_role == 'artiste' %}
-            <p>Aucune recommandation car vous êtes connecté entant qu'<strong>Artiste</strong></p>
-        {% else %}
-            <p>Aucune recommandation pour le moment.</p>
-        {% endif %}        
-        </div>
-    </div>
+    <h1>Bienvenue, {{ username }} !</h1>
+    <h2>Suggestions d'œuvres :</h2>
+    <ul>
+        <h3>{{ current_suggestion['titre'] }}</h3>
+        <p>{{ current_suggestion['description'] }}</p>
+        <img src="https://cdn.we-art.art/ressources/{{ current_suggestion['path'] }}" alt="{{ current_suggestion['titre'] }}" width="300px">
+    </ul>
+    {% if has_next %}
+        <a href="{{ url_for('index', index=next_index) }}" class="btn btn-primary">Suivant</a>
+    {% else %}
+        <a href="{{ url_for('index', index=0) }}" class="btn btn-primary">Suivant (œuvre aléatoire)</a>
+    {% endif %}
     <footer>
         <div class="footer-content">
             <div class="social-links">
@@ -65,6 +50,7 @@
             </div>
         </div>
     </footer>
+
     <style>
     body {
         display: flex;
@@ -127,55 +113,55 @@
     }
     
     footer {
-    text-align: center;
-    padding: 10px;
-    background: #222;
-    color: white;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
+        text-align: center;
+        padding: 10px;
+        background: #222;
+        color: white;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
 
-.footer-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 20px;
-    width: 100%;
-    flex-wrap: wrap;
-}
+    .footer-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px;
+        width: 100%;
+        flex-wrap: wrap;
+    }
 
-.social-links {
-    margin-right: 10px;
-}
+    .social-links {
+        margin-right: 10px;
+    }
 
-.footer-content p {
-    margin: 0;
-    margin-left: 10px;
-}
+    .footer-content p {
+        margin: 0;
+        margin-left: 10px;
+    }
 
-.legal-links {
-    margin-left: auto;
-    white-space: nowrap;
-    margin-left: 20px;
-    margin-right: 20px;
-}
+    .legal-links {
+        margin-left: auto;
+        white-space: nowrap;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 
-.legal-links a {
-    color: white;
-    margin-left: 10px;
-}
+    .legal-links a {
+        color: white;
+        margin-left: 10px;
+    }
 
-.legal-links a:hover {
-    color: #ff69b4;
-}
+    .legal-links a:hover {
+        color: #ff69b4;
+    }
 
-.social-links a {
-    color: white;
-    font-size: 20px;
-    text-decoration: none;
-    margin-left: 10px;
-}
-</style>    
+    .social-links a {
+        color: white;
+        font-size: 20px;
+        text-decoration: none;
+        margin-left: 10px;
+    }
+    </style>    
 </body>
 </html>
