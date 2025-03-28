@@ -9,7 +9,7 @@ WeArt est une plateforme dédiée aux artistes et amateurs d’art. Son objectif
 
 ## Membres de l’équipe
 Thibault - Esqualy : Administrateur système, réseau et développeur de l’algorithme avec Intelligence Artificielle.
--- Clémence - sh4nxel : Développeuse des systèmes de scroll, like et premières suggestions du site
+Clémence - sh4nxel : Développeuse des systèmes de scroll, like et premières suggestions du site
 Benjamin - h4r1cX : Développeur de l’algorithme de suggestion.
 Noé - ThsArtiste : Créateur de la base de données et développeur des liaisons entre la base de données, l’algorithme et le serveur.
 
